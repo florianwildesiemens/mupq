@@ -7,6 +7,7 @@
 #include <arithmetic.h>
 #include <simple_arithmetic.h>
 #include <fips202.h>
+#include <pkod.h>
 #include <stdlib.h>
 #include <string.h>
 #include <stdalign.h>
@@ -285,7 +286,7 @@ static void expand_P1_P2(const mayo_params_t *p, uint64_t *P, const unsigned cha
     unpack_m_vecs((unsigned char *)P, P, (PARAM_P1_limbs(p) + PARAM_P2_limbs(p))/PARAM_m_vec_limbs(p), PARAM_m(p));
 }
 
-static void eval_public_map(const mayo_params_t *p, const unsigned char *s, const uint64_t *P1, const uint64_t *P2, const uint64_t *P3, unsigned char *eval){
+static void eval_public_map(const mayo_params_t *p, const unsigned char *s, mayo_pkod_point_t * const P1, mayo_pkod_point_t * const P2, mayo_pkod_point_t * const P3, unsigned char *eval){
     uint64_t SPS[K_MAX * K_MAX * M_VEC_LIMBS_MAX] = {0};
     // combine computing PS and SPS in a single step
     m_calculate_PS_SPS(p, P1, P2, P3, s, SPS);
@@ -605,15 +606,6 @@ int mayo_keypair_compact(const mayo_params_t *p, unsigned char *cpk,
     return ret;
 }
 
-int mayo_expand_pk(const mayo_params_t *p, const unsigned char *cpk,
-                   uint64_t *pk) {
-    expand_P1_P2(p, pk, cpk);
-
-    unpack_m_vecs(cpk + PARAM_pk_seed_bytes(p), pk + PARAM_P1_limbs(p) + PARAM_P2_limbs(p), PARAM_P3_limbs(p)/PARAM_m_vec_limbs(p), PARAM_m(p));
-
-    return MAYO_OK;
-}
-
 int mayo_verify(const mayo_params_t *p, const unsigned char *m,
                 size_t mlen, const unsigned char *sig,
                 const unsigned char *cpk) {
@@ -621,7 +613,7 @@ int mayo_verify(const mayo_params_t *p, const unsigned char *m,
     unsigned char t[M_MAX];
     unsigned char y[2 * M_MAX] = {0}; // extra space for reduction mod f(X)
     unsigned char s[K_MAX * N_MAX];
-    uint64_t pk[P1_LIMBS_MAX + P2_LIMBS_MAX + P3_LIMBS_MAX] = {0};
+    mayo_pkod_t pkod;
     unsigned char tmp[DIGEST_BYTES_MAX + SALT_BYTES_MAX];
 
     const int param_m = PARAM_m(p);
@@ -632,26 +624,7 @@ int mayo_verify(const mayo_params_t *p, const unsigned char *m,
     const int param_digest_bytes = PARAM_digest_bytes(p);
     const int param_salt_bytes = PARAM_salt_bytes(p);
 
-    int ret = mayo_expand_pk(p, cpk, pk);
-    if (ret != MAYO_OK) {
-        return MAYO_ERR;
-    }
-
-    uint64_t *P1 = pk;
-    uint64_t *P2 = P1 + PARAM_P1_limbs(p);
-    uint64_t *P3 = P2 + PARAM_P2_limbs(p);
-
-#ifdef TARGET_BIG_ENDIAN
-    for (int i = 0; i < PARAM_P1_limbs(p); ++i) {
-        P1[i] = BSWAP64(P1[i]);
-    }
-    for (int i = 0; i < PARAM_P2_limbs(p); ++i) {
-        P2[i] = BSWAP64(P2[i]);
-    }
-    for (int i = 0; i < PARAM_P3_limbs(p); ++i) {
-        P3[i] = BSWAP64(P3[i]);
-    }
-#endif
+    pkod_init(&pkod, p, cpk);
 
     // hash m
     shake256(tmp, param_digest_bytes, m, mlen);
@@ -665,7 +638,7 @@ int mayo_verify(const mayo_params_t *p, const unsigned char *m,
     // decode s
     decode(sig, s, param_k * param_n);
 
-    eval_public_map(p, s, P1, P2, P3, y);
+    eval_public_map(p, s, &(pkod.P1), &(pkod.P2), &(pkod.P3), y);
 
     if (memcmp(y, t, param_m) == 0) {
         return MAYO_OK; // good signature
