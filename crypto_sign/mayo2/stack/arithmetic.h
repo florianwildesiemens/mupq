@@ -1,1 +1,1 @@
-../../mayo1/ref/arithmetic.h
+../../mayo1/stack/arithmetic.h

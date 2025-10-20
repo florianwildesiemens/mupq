@@ -1,1 +1,1 @@
-../../mayo1/ref/echelon_form.h
+../../mayo1/stack/echelon_form.h

@@ -1,1 +1,1 @@
-../../mayo1/ref/mem.c
+../../mayo1/stack/mem.c
