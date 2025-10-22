@@ -6,7 +6,6 @@
 #include <stdint.h>
 #include <mayo.h>
 #include <simple_arithmetic.h>
-#include <pkod.h>
 
 // This implements arithmetic for vectors of X field elements in Z_2[x]/(x^4+x+1)
 
@@ -25,15 +24,6 @@ inline void m_vec_add (int m_vec_limbs, const uint64_t *in, uint64_t *acc) {
     for (size_t i = 0; i < M_VEC_LIMBS_MAX; i++)
     {
         acc[i] ^= in[i];
-    }
-}
-
-static
-inline void m_vec_add_pkod (int m_vec_limbs, mayo_pkod_point_t * const in, const uint_fast32_t in_start, uint64_t *acc) {
-    (void) m_vec_limbs;
-    for (size_t i = 0; i < M_VEC_LIMBS_MAX; i++)
-    {
-        acc[i] ^= pkod_P(in_start + i, in);
     }
 }
 

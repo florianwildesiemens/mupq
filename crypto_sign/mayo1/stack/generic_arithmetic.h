@@ -10,6 +10,7 @@
 #else
 #include <arithmetic_fixed.h>
 #endif
+#include <pkod.h>
 
 // multiplies m (possibly upper triangular) matrices with a single matrix and adds result to acc
 static inline
@@ -101,6 +102,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1,
     uint64_t accumulator[16 * ((M_MAX+15)/16) * N_MAX] = {0};
     int P1_used;
     int P3_used;
+    uint64_t vector[(M_MAX+15)/16] = {0}; // Must be zero initialized, because pkod_get_vector() only sets m_vec_limbs per vector, but m_vec_add() from arithmetic_fixed.h adds M_VEC_LIMBS_MAX per vector
     
     for (int col = 0; col < k; col++) {
         for(unsigned int i = 0; i < sizeof(accumulator)/8; i++) {
@@ -109,20 +111,23 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1,
         P1_used = 0;
         for (int row = 0; row < v; row++) {
             for (int j = row; j < v; j++) {
-                m_vec_add_pkod(m_vec_limbs, P1, (P1_used * m_vec_limbs), accumulator + ( row * 16 + S[col * n + j] )*m_vec_limbs);
+                pkod_get_vector(vector, P1_used, P1);
+                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )*m_vec_limbs);
 
                 P1_used ++;
             }
 
             for (int j = 0; j < o; j++) {
-                m_vec_add_pkod(m_vec_limbs, P2, (row * o + j)*m_vec_limbs, accumulator + ( row * 16 + S[(col * n) + j + v] )* m_vec_limbs);
+                pkod_get_vector(vector, (row * o + j), P2);
+                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[(col * n) + j + v] )* m_vec_limbs);
             }
         }
 
         P3_used = 0;
         for (int row = v; row < n; row++) {
             for (int j = row; j < n; j++) {
-                m_vec_add_pkod(m_vec_limbs, P3, P3_used * m_vec_limbs, accumulator + ( row * 16 + S[col * n + j] )* m_vec_limbs );
+                pkod_get_vector(vector, P3_used, P3);
+                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )* m_vec_limbs );
                 P3_used ++;
             }
         }
@@ -155,18 +160,21 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, may
     const int m_vec_limbs = (m + 15)/16;
 
     uint64_t accumulator[16 * ((M_MAX+15)/16) * K_MAX * N_MAX] = {0};
+    uint64_t vector[(M_MAX+15)/16] = {0}; // Must be zero initialized, because pkod_get_vector() only sets m_vec_limbs per vector, but m_vec_add() from arithmetic_fixed.h adds M_VEC_LIMBS_MAX per vector
     int P1_used = 0;
     for (int row = 0; row < v; row++) {
         for (int j = row; j < v; j++) {
+            pkod_get_vector(vector, P1_used, P1);
             for (int col = 0; col < k; col++) {
-                m_vec_add_pkod(m_vec_limbs, P1, (P1_used * m_vec_limbs), accumulator + ( (row * k + col) * 16 + S[col * n + j] )*m_vec_limbs);
+                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )*m_vec_limbs);
             }
             P1_used ++;
         }
 
         for (int j = 0; j < o; j++) {
+            pkod_get_vector(vector, (row * o + j), P2);
             for (int col = 0; col < k; col++) {
-                m_vec_add_pkod(m_vec_limbs, P2, (row * o + j)*m_vec_limbs, accumulator + ( (row * k + col) * 16 + S[(col * n) + j + v] )* m_vec_limbs);
+                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[(col * n) + j + v] )* m_vec_limbs);
             }
         }
     }
@@ -174,8 +182,9 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, may
     int P3_used = 0;
     for (int row = v; row < n; row++) {
         for (int j = row; j < n; j++) {
+            pkod_get_vector(vector, P3_used, P3);
             for (int col = 0; col < k; col++) {
-                m_vec_add_pkod(m_vec_limbs, P3, P3_used * m_vec_limbs, accumulator + ( (row * k + col) * 16 + S[col * n + j] )* m_vec_limbs );
+                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )* m_vec_limbs );
             }
             P3_used ++;
         }

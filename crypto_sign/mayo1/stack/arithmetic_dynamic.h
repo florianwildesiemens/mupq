@@ -5,7 +5,6 @@
 
 #include <stdint.h>
 #include <simple_arithmetic.h>
-#include <pkod.h>
 
 static
 inline void m_vec_copy(int m_vec_limbs, const uint64_t *in, uint64_t *out) {
@@ -18,13 +17,6 @@ static
 inline void m_vec_add(int m_vec_limbs, const uint64_t *in, uint64_t *acc) {
     for (int i = 0; i < m_vec_limbs; i++) {
         acc[i] ^= in[i];
-    }
-}
-
-static
-inline void m_vec_add_pkod(int m_vec_limbs, mayo_pkod_point_t * const in, const uint_fast32_t in_start, uint64_t *acc) {
-    for (int i = 0; i < m_vec_limbs; i++) {
-        acc[i] ^= pkod_P(in_start + i, in);
     }
 }
 

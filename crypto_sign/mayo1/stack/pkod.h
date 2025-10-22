@@ -8,22 +8,14 @@
 #include "mayo.h"
 
 /**
- * On-demand decompressed public key point via pseudo-random function (PRF).
+ * Mayo pseudo-random function (PRF) context.
  */
 typedef struct
 {
-  const aes128ctx_publicinputs * key; ///< Pointer to expanded seed for PRF.
+  aes128ctx_publicinputs key; ///< Expanded seed for PRF.
   uint8_t cache[AES_BLOCKBYTES];  ///< Buffer for holding output of PRF.
   uint32_t cache_ctr; ///< The counter value used to produce the block in cache.
-} mayo_pkod_prf_point_t;
-
-/**
- * On-demand decompressed public key point from transmitted sequence (TRS).
- */
-typedef struct
-{
-  const uint8_t * seq; ///< Pointer to the transmitted sequence.
-} mayo_pkod_trs_point_t;
+} mayo_pkod_prf_ctx_t;
 
 /**
  * On-demand decompressed public key point.
@@ -32,11 +24,11 @@ typedef struct
 {
   union
   {
-    mayo_pkod_prf_point_t prf;
-    mayo_pkod_trs_point_t trs;
+    mayo_pkod_prf_ctx_t * prf;
+    const uint8_t * trs;
   } src; ///< Type specific data for this point.
-  uint32_t limb_off;  /**< Limb offset for this point, which is 0 for P1 and P3,
-                           and PARAM_P1_limbs for P2. */
+  uint32_t vec_off;  /**< Offset to add to vec_idx for calculating position in src.
+                          Is 0 for P1 and P3, and PARAM_P1_limbs/m_vec_limbs for P2. */
   uint8_t m;        ///< Parameter m.
   uint8_t point_type; ///< Type of point. If equal to 3, trs is used, otherwise prf.
 } mayo_pkod_point_t;
@@ -46,10 +38,10 @@ typedef struct
  */
 typedef struct
 {
-  aes128ctx_publicinputs key; ///< Expanded key for PRF
   mayo_pkod_point_t P1;
   mayo_pkod_point_t P2;
   mayo_pkod_point_t P3;
+  mayo_pkod_prf_ctx_t ctx;
 } mayo_pkod_t;
 
 /**
@@ -63,12 +55,12 @@ void pkod_init(mayo_pkod_t * const PP, const mayo_params_t * const p,
                const unsigned char * const cpk);
 
 /**
- * Decompress a limb of P1, P2, or P3 on-demand
+ * Decompress a vector of P1, P2, or P3 on-demand
  *
- * @param[in] i Limb index within the given point to return
- * @param[in] P Point to return a limb of, either P1, P2, or P3 of a mayo_pkod_t instance
- * @return The requested limb of the given point
+ * @param[out] out Where to place the decompressed vector
+ * @param[in] vec_idx Which vector of the provided point to return
+ * @param[in] P Point to return a vector of, either P1, P2, or P3 of a mayo_pkod_t instance
  */
-uint64_t pkod_P(const uint_fast32_t i, mayo_pkod_point_t * const P);
+void pkod_get_vector(uint64_t * const out, const uint32_t vec_idx, const mayo_pkod_point_t * const P);
 
 #endif
