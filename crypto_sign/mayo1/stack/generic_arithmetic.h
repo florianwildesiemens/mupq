@@ -4,13 +4,13 @@
 #define GENERIC_ARITHMETIC_H
 
 #include <simple_arithmetic.h>
+#include <pkod.h>
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 #include <arithmetic_dynamic.h>
 #else
 #include <arithmetic_fixed.h>
 #endif
-#include <pkod.h>
 
 // multiplies m (possibly upper triangular) matrices with a single matrix and adds result to acc
 static inline
