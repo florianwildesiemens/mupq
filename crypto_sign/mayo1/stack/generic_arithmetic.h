@@ -129,7 +129,7 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
       {                                                                                            \
         if (0 < *S_l)                                                                              \
         {                                                                                          \
-          m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)]);       \
+          m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)-1u]);    \
         }                                                                                          \
       }                                                                                            \
     }                                                                                              \
@@ -141,7 +141,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
                                                    const unsigned o, const unsigned k,
                                                    uint64_t * SPS)
 {
-#define BINS 16u
+#define BINS (16u - 1u)
   uint64_t accumulator[K_MAX][K_MAX][BINS][M_VEC_LIMBS_MAX] = {0};
   uint64_t Phl[M_VEC_LIMBS_MAX] = {0};
 
@@ -181,7 +181,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, SPS += m_vec_limbs)
     {
-      m_vec_multiply_bins(m_vec_limbs, *(accumulator[SPS_row][SPS_col]), SPS);
+      m_vec_multiply_bins(m_vec_limbs, accumulator[SPS_row][SPS_col][-1], SPS);
     }
   }
 }
