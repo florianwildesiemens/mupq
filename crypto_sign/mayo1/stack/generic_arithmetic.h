@@ -92,8 +92,8 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
 //                   [  0  P3 ]   [S2]   [        P3*S2]
 // compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = P1 ] = [ S1*P1 + S2*P2 ]
 //                               [         P3*S2 = P2 ]
-static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1, mayo_pkod_point_t * const P2, mayo_pkod_point_t * const P3,
-                                                   const unsigned char *S, const int m, const int v, const int o, const int k, uint64_t *SPS) {
+static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod, const unsigned char *S,
+                                const int m, const int v, const int o, const int k, uint64_t *SPS) {
 
     const int n = o + v;
     const int m_vec_limbs = (m + 15)/16;
@@ -111,14 +111,14 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1,
         P1_used = 0;
         for (int row = 0; row < v; row++) {
             for (int j = row; j < v; j++) {
-                pkod_get_vector(vector, P1_used, P1);
+                pkod_get_vector(vector, P1_used, 1u, pkod);
                 m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )*m_vec_limbs);
 
                 P1_used ++;
             }
 
             for (int j = 0; j < o; j++) {
-                pkod_get_vector(vector, (row * o + j), P2);
+                pkod_get_vector(vector, (row * o + j), 2u, pkod);
                 m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[(col * n) + j + v] )* m_vec_limbs);
             }
         }
@@ -126,7 +126,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1,
         P3_used = 0;
         for (int row = v; row < n; row++) {
             for (int j = row; j < n; j++) {
-                pkod_get_vector(vector, P3_used, P3);
+                pkod_get_vector(vector, P3_used, 3u, pkod);
                 m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )* m_vec_limbs );
                 P3_used ++;
             }
@@ -153,8 +153,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_point_t * const P1,
 
 // compute P * S^t = [ P1  P2 ] * [S1] = [P1*S1 + P2*S2]
 //                   [  0  P3 ]   [S2]   [        P3*S2]
-static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, mayo_pkod_point_t * const P2, mayo_pkod_point_t * const P3,
-                                               const unsigned char *S, const int m, const int v, const int o, const int k, uint64_t *PS) {
+static inline void mayo_generic_m_calculate_PS(mayo_pkod_t * const pkod, const unsigned char *S, const int m, const int v, const int o, const int k, uint64_t *PS) {
 
     const int n = o + v;
     const int m_vec_limbs = (m + 15)/16;
@@ -164,7 +163,7 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, may
     int P1_used = 0;
     for (int row = 0; row < v; row++) {
         for (int j = row; j < v; j++) {
-            pkod_get_vector(vector, P1_used, P1);
+            pkod_get_vector(vector, P1_used, 1u, pkod);
             for (int col = 0; col < k; col++) {
                 m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )*m_vec_limbs);
             }
@@ -172,7 +171,7 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, may
         }
 
         for (int j = 0; j < o; j++) {
-            pkod_get_vector(vector, (row * o + j), P2);
+            pkod_get_vector(vector, (row * o + j), 2u, pkod);
             for (int col = 0; col < k; col++) {
                 m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[(col * n) + j + v] )* m_vec_limbs);
             }
@@ -182,7 +181,7 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_point_t * const P1, may
     int P3_used = 0;
     for (int row = v; row < n; row++) {
         for (int j = row; j < n; j++) {
-            pkod_get_vector(vector, P3_used, P3);
+            pkod_get_vector(vector, P3_used, 3u, pkod);
             for (int col = 0; col < k; col++) {
                 m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )* m_vec_limbs );
             }
@@ -283,14 +282,13 @@ void compute_P3(const mayo_params_t* p, const uint64_t* P1, uint64_t *P2, const 
 //                   [  0  P3 ]   [S2]   [        P3*S2]
 // compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = P1 ] = [ S1*P1 + S2*P2 ]
 //                               [         P3*S2 = P2 ]
-static inline void m_calculate_PS_SPS(const mayo_params_t *p, mayo_pkod_point_t * const P1, mayo_pkod_point_t * const P2,
-                                      mayo_pkod_point_t * const P3, const unsigned char *s, uint64_t *SPS) {
+static inline void m_calculate_PS_SPS(const mayo_params_t *p, mayo_pkod_t * const pkod, const unsigned char *s, uint64_t *SPS) {
     // compute P * S^t = {(P1, P2), (0, P3)} * S^t = {(P1*S1 + P2*S2), (P3 * S2)}
     #ifndef ENABLE_PARAMS_DYNAMIC
     (void) p;
     #endif
     #if defined(HAVE_STACKEFFICIENT) || defined(PQM4)
-    mayo_generic_m_calculate_PS_SPS(P1, P2, P3, s, PARAM_m(p), PARAM_v(p), PARAM_o(p), PARAM_k(p), SPS);
+    mayo_generic_m_calculate_PS_SPS(pkod, s, PARAM_m(p), PARAM_v(p), PARAM_o(p), PARAM_k(p), SPS);
     #else
     uint64_t PS[N_MAX * K_MAX * M_VEC_LIMBS_MAX] = { 0 };
     mayo_generic_m_calculate_PS(P1, P2, P3, s, PARAM_m(p), PARAM_v(p), PARAM_o(p), PARAM_k(p), PS);

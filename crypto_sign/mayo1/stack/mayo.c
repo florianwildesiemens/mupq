@@ -286,10 +286,10 @@ static void expand_P1_P2(const mayo_params_t *p, uint64_t *P, const unsigned cha
     unpack_m_vecs((unsigned char *)P, P, (PARAM_P1_limbs(p) + PARAM_P2_limbs(p))/PARAM_m_vec_limbs(p), PARAM_m(p));
 }
 
-static void eval_public_map(const mayo_params_t *p, const unsigned char *s, mayo_pkod_point_t * const P1, mayo_pkod_point_t * const P2, mayo_pkod_point_t * const P3, unsigned char *eval){
+static void eval_public_map(const mayo_params_t *p, const unsigned char *s, mayo_pkod_t * const pkod, unsigned char *eval){
     uint64_t SPS[K_MAX * K_MAX * M_VEC_LIMBS_MAX] = {0};
     // combine computing PS and SPS in a single step
-    m_calculate_PS_SPS(p, P1, P2, P3, s, SPS);
+    m_calculate_PS_SPS(p, pkod, s, SPS);
     unsigned char zero[M_MAX] = {0};
     compute_rhs(p, SPS, zero, eval);
 }
@@ -638,7 +638,7 @@ int mayo_verify(const mayo_params_t *p, const unsigned char *m,
     // decode s
     decode(sig, s, param_k * param_n);
 
-    eval_public_map(p, s, &(pkod.P1), &(pkod.P2), &(pkod.P3), y);
+    eval_public_map(p, s, &pkod, y);
 
     if (memcmp(y, t, param_m) == 0) {
         return MAYO_OK; // good signature
