@@ -92,61 +92,92 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
 //                   [  0  P3 ]   [S2]   [        P3*S2]
 // compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = P1 ] = [ S1*P1 + S2*P2 ]
 //                               [         P3*S2 = P2 ]
-static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod, const unsigned char *S,
-                                const int m, const int v, const int o, const int k, uint64_t *SPS) {
 
-    const int n = o + v;
-    const int m_vec_limbs = (m + 15)/16;
+/* With a dynamically expanded public key, it is crucial for runtime to expand it only once. So, to
+   use each element of P only once. We thus calculate S * P * S^t by reordering the sums and
+   multiplications to have the loops iterating P as the outermost ones.
 
-    uint64_t PS[(N_MAX + K_MAX) * M_VEC_LIMBS_MAX] = { 0 };
-    uint64_t accumulator[16 * ((M_MAX+15)/16) * N_MAX] = {0};
-    int P1_used;
-    int P3_used;
-    uint64_t vector[(M_MAX+15)/16] = {0}; // Must be zero initialized, because pkod_get_vector() only sets m_vec_limbs per vector, but m_vec_add() from arithmetic_fixed.h adds M_VEC_LIMBS_MAX per vector
-    
-    for (int col = 0; col < k; col++) {
-        for(unsigned int i = 0; i < sizeof(accumulator)/8; i++) {
-            accumulator[i] = 0;
-        }
-        P1_used = 0;
-        for (int row = 0; row < v; row++) {
-            for (int j = row; j < v; j++) {
-                pkod_get_vector(vector, P1_used, 1u, pkod);
-                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )*m_vec_limbs);
+   SPS is a k by k matrix of vectors, equivalent to a k by k by m cuboid of nibbles. Its elements
+   can be calculated as
+     SPS_{i,j} = SUM_{h,l} P_{h,l} S_{i,h} S_{j,l}
+   where i, j run from 1 to k, and h, l run from 1 to n.
 
-                P1_used ++;
-            }
+   To iterate over the elements of P only once, we calculate all elements of SPS in parallel. So, we
+   iterate over i, j in the inner loops and over h, l in the outer loops. To speed up the
+   multiplications in this setting, we use two optimizations: First, the product of the two elements
+   of S is found in a 16 by 16 look-up table. Second, we use an accumulator to gather all vectors
+   with the same factor and multiply their sum at the end, just like the original mupq
+   implementation does.
 
-            for (int j = 0; j < o; j++) {
-                pkod_get_vector(vector, (row * o + j), 2u, pkod);
-                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[(col * n) + j + v] )* m_vec_limbs);
-            }
-        }
+   Note that we rely on S being passed as a k by n matrix in conventional C memory organization,
+   which means S[0] up to S[n-1] provide the first row of S.
+ */
 
-        P3_used = 0;
-        for (int row = v; row < n; row++) {
-            for (int j = row; j < n; j++) {
-                pkod_get_vector(vector, P3_used, 3u, pkod);
-                m_vec_add(m_vec_limbs, vector, accumulator + ( row * 16 + S[col * n + j] )* m_vec_limbs );
-                P3_used ++;
-            }
-        }
+  /** Macro to iterate over all entries of SPS within mayo_generic_m_calculate_PS_SPS()
 
-        for (int row = 0; row < n; row++) {
-            m_vec_multiply_bins(m_vec_limbs, accumulator + row * 16 * m_vec_limbs, PS + (row + col) * m_vec_limbs);
-        }
+     While iterating over i = SPS_row, j = SPS_col, the elements of S are accessed column-wise.
+     Therefore, it is more efficient to keep a pointer for each of the two columns and increment it
+     by n rather than calculating the indexes everytime from SPS_row and SPS_col. */
+#define ADD_FOR_SPS                                                                                \
+  const unsigned char * S_h = S + P_row;                                                           \
+  for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++, S_h += n)                                 \
+  {                                                                                                \
+    const unsigned char * S_l = S + P_col;                                                         \
+    for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, S_l += n)                               \
+    {                                                                                              \
+      m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)]);           \
+    }                                                                                              \
+  }
 
-        for (int row = 0; row < k; row++) {
-            for (unsigned int i = 0; i < 16*((M_MAX+15)/16); ++i)
-                accumulator[i] = 0;
-            for (int j = 0; j < n; j++) {
-                m_vec_add(m_vec_limbs, PS + (j + col) * m_vec_limbs, accumulator + S[row * n + j]*m_vec_limbs);
-            }
-            m_vec_multiply_bins(m_vec_limbs, accumulator, SPS + (row * k + col) * m_vec_limbs);
-        }
+static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
+                                                   const unsigned char * const S,
+                                                   const unsigned m, const unsigned v,
+                                                   const unsigned o, const unsigned k,
+                                                   uint64_t * SPS)
+{
+#define BINS 16u
+  uint64_t accumulator[K_MAX][K_MAX][BINS][M_VEC_LIMBS_MAX] = {0};
+  uint64_t Phl[M_VEC_LIMBS_MAX] = {0};
 
+#define NIBBLES_PER_LIMB (64 / 4)
+  const unsigned m_vec_limbs = (m + (NIBBLES_PER_LIMB - 1)) / NIBBLES_PER_LIMB;
+  const unsigned n = o + v;
+#define S_IDX(r,c) (((r) * n) + (c))
+
+  uint_fast16_t P1_used = 0;
+  for (uint_fast8_t P_row = 0; P_row < v; P_row++)
+  {
+    for (uint_fast8_t P_col = P_row; P_col < v; P_col++)
+    {
+      pkod_get_vector(Phl, P1_used++, 1u, pkod);
+      ADD_FOR_SPS
     }
-
+  }
+  uint_fast16_t P2_used = 0;
+  for (uint_fast8_t P_row = 0; P_row < v; P_row++)
+  {
+    for (uint_fast8_t P_col = v; P_col < n; P_col++)
+    {
+      pkod_get_vector(Phl, P2_used++, 2u, pkod);
+      ADD_FOR_SPS
+    }
+  }
+  uint_fast16_t P3_used = 0;
+  for (uint_fast8_t P_row = v; P_row < n; P_row++)
+  {
+    for (uint_fast8_t P_col = P_row; P_col < n; P_col++)
+    {
+      pkod_get_vector(Phl, P3_used++, 3u, pkod);
+      ADD_FOR_SPS
+    }
+  }
+  for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++)
+  {
+    for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, SPS += m_vec_limbs)
+    {
+      m_vec_multiply_bins(m_vec_limbs, *(accumulator[SPS_row][SPS_col]), SPS);
+    }
+  }
 }
 
 #else

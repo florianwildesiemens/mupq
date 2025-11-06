@@ -24,6 +24,12 @@ static inline unsigned char mul_f(unsigned char a, unsigned char b) {
     return out;
 }
 
+extern const uint8_t gf16_mul_table[256];
+static inline unsigned char mul_f_LUT(unsigned char a, unsigned char b)
+{
+  return gf16_mul_table[(a << 4u) + b];
+}
+
 static inline uint64_t mul_fx8(unsigned char a, uint64_t b) {
     // carryless multiply
     uint64_t p;
