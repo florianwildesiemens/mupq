@@ -90,8 +90,8 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
 #if defined(HAVE_STACKEFFICIENT) || defined(PQM4)
 // compute P * S^t = [ P1  P2 ] * [S1] = [P1*S1 + P2*S2]
 //                   [  0  P3 ]   [S2]   [        P3*S2]
-// compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = P1 ] = [ S1*P1 + S2*P2 ]
-//                               [         P3*S2 = P2 ]
+// compute S * PS  = [ S1 S2 ] * [ P1*S1 + P2*S2 = PS1 ] = [ S1*PS1 + S2*PS2 ]
+//                               [         P3*S2 = PS2 ]
 
 /* With a dynamically expanded public key, it is crucial for runtime to expand it only once. So, to
    use each element of P only once. We thus calculate S * P * S^t by reordering the sums and
@@ -122,10 +122,16 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
   const unsigned char * S_h = S + P_row;                                                           \
   for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++, S_h += n)                                 \
   {                                                                                                \
-    const unsigned char * S_l = S + P_col;                                                         \
-    for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, S_l += n)                               \
+    if (0 < *S_h)                                                                                  \
     {                                                                                              \
-      m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)]);           \
+      const unsigned char * S_l = S + P_col;                                                       \
+      for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, S_l += n)                             \
+      {                                                                                            \
+        if (0 < *S_l)                                                                              \
+        {                                                                                          \
+          m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)]);       \
+        }                                                                                          \
+      }                                                                                            \
     }                                                                                              \
   }
 
