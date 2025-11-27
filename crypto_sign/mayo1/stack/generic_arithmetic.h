@@ -5,6 +5,7 @@
 
 #include <simple_arithmetic.h>
 #include <pkod.h>
+#include <string.h>
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 #include <arithmetic_dynamic.h>
@@ -119,6 +120,32 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
      Therefore, it is more efficient to keep a pointer for each of the two columns and increment it
      by n rather than calculating the indexes everytime from SPS_row and SPS_col. */
 #define ADD_FOR_SPS                                                                                \
+  memset(&(Phl[1][0]), 0, sizeof(uint64_t) * (BINS-1) * m_vec_limbs);                                        \
+  m_vec_mul_add_x(m_vec_limbs, Phl[0], Phl[1]);                                                    \
+  m_vec_copy(m_vec_limbs, Phl[1], Phl[2]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[0], Phl[2]);                                                          \
+  m_vec_mul_add_x(m_vec_limbs, Phl[1], Phl[3]);                                                    \
+  m_vec_copy(m_vec_limbs, Phl[3], Phl[4]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[0], Phl[4]);                                                          \
+  m_vec_copy(m_vec_limbs, Phl[3], Phl[5]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[1], Phl[5]);                                                          \
+  m_vec_copy(m_vec_limbs, Phl[3], Phl[6]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[2], Phl[6]);                                                          \
+  m_vec_mul_add_x(m_vec_limbs, Phl[3], Phl[7]);                                                    \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[8]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[0], Phl[8]);                                                          \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[9]);                                                         \
+  m_vec_add(m_vec_limbs, Phl[1], Phl[9]);                                                          \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[10]);                                                        \
+  m_vec_add(m_vec_limbs, Phl[2], Phl[10]);                                                         \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[11]);                                                        \
+  m_vec_add(m_vec_limbs, Phl[3], Phl[11]);                                                         \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[12]);                                                        \
+  m_vec_add(m_vec_limbs, Phl[4], Phl[12]);                                                         \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[13]);                                                        \
+  m_vec_add(m_vec_limbs, Phl[5], Phl[13]);                                                         \
+  m_vec_copy(m_vec_limbs, Phl[7], Phl[14]);                                                        \
+  m_vec_add(m_vec_limbs, Phl[6], Phl[14]);                                                         \
   const unsigned char * S_h = S + P_row;                                                           \
   for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++, S_h += n)                                 \
   {                                                                                                \
@@ -129,7 +156,7 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
       {                                                                                            \
         if (0 < *S_l)                                                                              \
         {                                                                                          \
-          m_vec_add(m_vec_limbs, Phl, accumulator[SPS_row][SPS_col][mul_f_LUT(*S_h, *S_l)-1u]);    \
+          m_vec_add(m_vec_limbs, Phl[mul_f_LUT(*S_h, *S_l)-1u], accumulator[SPS_row][SPS_col]);    \
         }                                                                                          \
       }                                                                                            \
     }                                                                                              \
@@ -142,8 +169,10 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
                                                    uint64_t * SPS)
 {
 #define BINS (16u - 1u)
-  uint64_t accumulator[K_MAX][K_MAX][BINS][M_VEC_LIMBS_MAX] = {0};
-  uint64_t Phl[M_VEC_LIMBS_MAX] = {0};
+  //uint64_t accumulator[K_MAX][K_MAX][M_VEC_LIMBS_MAX] = {0};
+  uint64_t (*accumulator)[K_MAX][M_VEC_LIMBS_MAX] = (uint64_t (*)[K_MAX][M_VEC_LIMBS_MAX])SPS;
+  memset(accumulator, 0, sizeof(uint64_t) * K_MAX * K_MAX * M_VEC_LIMBS_MAX);
+  uint64_t Phl[BINS][M_VEC_LIMBS_MAX] = {0};
 
 #define NIBBLES_PER_LIMB (64 / 4)
   const unsigned m_vec_limbs = (m + (NIBBLES_PER_LIMB - 1)) / NIBBLES_PER_LIMB;
@@ -155,7 +184,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = P_row; P_col < v; P_col++)
     {
-      pkod_get_vector(Phl, P1_used++, 1u, pkod);
+      pkod_get_vector(Phl[0], P1_used++, 1u, pkod);
       ADD_FOR_SPS
     }
   }
@@ -164,7 +193,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = v; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl, P2_used++, 2u, pkod);
+      pkod_get_vector(Phl[0], P2_used++, 2u, pkod);
       ADD_FOR_SPS
     }
   }
@@ -173,10 +202,11 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = P_row; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl, P3_used++, 3u, pkod);
+      pkod_get_vector(Phl[0], P3_used++, 3u, pkod);
       ADD_FOR_SPS
     }
   }
+  /*
   for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++)
   {
     for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, SPS += m_vec_limbs)
@@ -184,6 +214,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
       m_vec_multiply_bins(m_vec_limbs, accumulator[SPS_row][SPS_col][-1], SPS);
     }
   }
+    */
 }
 
 #else
