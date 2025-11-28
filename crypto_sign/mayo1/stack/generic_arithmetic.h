@@ -119,6 +119,7 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
      While iterating over i = SPS_row, j = SPS_col, the elements of S are accessed column-wise.
      Therefore, it is more efficient to keep a pointer for each of the two columns and increment it
      by n rather than calculating the indexes everytime from SPS_row and SPS_col. */
+// TODO: It should be possible to get rid of the initial memset().
 #define ADD_FOR_SPS                                                                                \
   memset(&(Phl[1][0]), 0, sizeof(uint64_t) * (BINS-1) * m_vec_limbs);                                        \
   m_vec_mul_add_x(m_vec_limbs, Phl[0], Phl[1]);                                                    \
@@ -206,15 +207,6 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
       ADD_FOR_SPS
     }
   }
-  /*
-  for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++)
-  {
-    for (uint_fast8_t SPS_col = 0; SPS_col < k; SPS_col++, SPS += m_vec_limbs)
-    {
-      m_vec_multiply_bins(m_vec_limbs, accumulator[SPS_row][SPS_col][-1], SPS);
-    }
-  }
-    */
 }
 
 #else
