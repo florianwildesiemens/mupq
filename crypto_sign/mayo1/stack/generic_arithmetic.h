@@ -104,11 +104,17 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
    where i, j run from 1 to k, and h, l run from 1 to n.
 
    To iterate over the elements of P only once, we calculate all elements of SPS in parallel. So, we
-   iterate over i, j in the inner loops and over h, l in the outer loops. To speed up the
-   multiplications in this setting, we use two optimizations: First, the product of the two elements
-   of S is found in a 16 by 16 look-up table. Second, we use an accumulator to gather all vectors
-   with the same factor and multiply their sum at the end, just like the original mupq
-   implementation does.
+   iterate over i, j in the inner loops and over h, l in the outer loops.
+
+   Since we now use the same element of P k^2 times in various multiples, we can cheaply get rid of
+   the accumulator by calculating all multiples once after generating the element of P and adding
+   the respective multiple directly on the corresponding element of SPS. While we need to hold the
+   15 multiples of the element of P now, these 15*M_VEC_LIMBS_MAX uint64_t are k^2 times less than
+   the size of the accumulator of K_MAX*K_MAX*15*M_VEC_LIMBS_MAX.
+
+   To save some run-time in the innermost loops, the product of the two elements of S is found in a
+   16 by 16 look-up table. This way the innermost loop does not have to perform any multiplications,
+   but only a table look-up to get an index for the following add operation.
 
    Note that we rely on S being passed as a k by n matrix in conventional C memory organization,
    which means S[0] up to S[n-1] provide the first row of S.
@@ -170,7 +176,6 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
                                                    uint64_t * SPS)
 {
 #define BINS (16u - 1u)
-  //uint64_t accumulator[K_MAX][K_MAX][M_VEC_LIMBS_MAX] = {0};
   uint64_t (*accumulator)[K_MAX][M_VEC_LIMBS_MAX] = (uint64_t (*)[K_MAX][M_VEC_LIMBS_MAX])SPS;
   memset(accumulator, 0, sizeof(uint64_t) * K_MAX * K_MAX * M_VEC_LIMBS_MAX);
   uint64_t Phl[BINS][M_VEC_LIMBS_MAX] = {0};
