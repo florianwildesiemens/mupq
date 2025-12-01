@@ -125,20 +125,18 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
      While iterating over i = SPS_row, j = SPS_col, the elements of S are accessed column-wise.
      Therefore, it is more efficient to keep a pointer for each of the two columns and increment it
      by n rather than calculating the indexes everytime from SPS_row and SPS_col. */
-// TODO: It should be possible to get rid of the initial memset().
 #define ADD_FOR_SPS                                                                                \
-  memset(&(Phl[1][0]), 0, sizeof(uint64_t) * (BINS-1) * m_vec_limbs);                                        \
-  m_vec_mul_add_x(m_vec_limbs, Phl[0], Phl[1]);                                                    \
+  m_vec_mul_x(m_vec_limbs, Phl[0], Phl[1]);                                                        \
   m_vec_copy(m_vec_limbs, Phl[1], Phl[2]);                                                         \
   m_vec_add(m_vec_limbs, Phl[0], Phl[2]);                                                          \
-  m_vec_mul_add_x(m_vec_limbs, Phl[1], Phl[3]);                                                    \
+  m_vec_mul_x(m_vec_limbs, Phl[1], Phl[3]);                                                        \
   m_vec_copy(m_vec_limbs, Phl[3], Phl[4]);                                                         \
   m_vec_add(m_vec_limbs, Phl[0], Phl[4]);                                                          \
   m_vec_copy(m_vec_limbs, Phl[3], Phl[5]);                                                         \
   m_vec_add(m_vec_limbs, Phl[1], Phl[5]);                                                          \
   m_vec_copy(m_vec_limbs, Phl[3], Phl[6]);                                                         \
   m_vec_add(m_vec_limbs, Phl[2], Phl[6]);                                                          \
-  m_vec_mul_add_x(m_vec_limbs, Phl[3], Phl[7]);                                                    \
+  m_vec_mul_x(m_vec_limbs, Phl[3], Phl[7]);                                                        \
   m_vec_copy(m_vec_limbs, Phl[7], Phl[8]);                                                         \
   m_vec_add(m_vec_limbs, Phl[0], Phl[8]);                                                          \
   m_vec_copy(m_vec_limbs, Phl[7], Phl[9]);                                                         \

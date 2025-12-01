@@ -53,6 +53,16 @@ static void m_vec_mul_add_x (int m_vec_limbs, const uint64_t *in, uint64_t *acc)
 }
 
 inline
+static void m_vec_mul_x (int m_vec_limbs, const uint64_t *in, uint64_t *out) {
+    (void) m_vec_limbs;
+    uint64_t mask_msb = 0x8888888888888888ULL;
+    for(int i=0; i < M_VEC_LIMBS_MAX; i++){
+        uint64_t t = in[i] & mask_msb;
+        out[i] = ((in[i] ^ t) << 1) ^ ((t >> 3) * 3);
+    }
+}
+
+inline
 static void m_vec_mul_add_x_inv (int m_vec_limbs, const uint64_t *in, uint64_t *acc) {
     (void) m_vec_limbs;
     uint64_t mask_lsb = 0x1111111111111111ULL;
