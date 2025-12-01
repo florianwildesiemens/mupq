@@ -175,7 +175,6 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
 {
 #define BINS (16u - 1u)
   uint64_t (*accumulator)[K_MAX][M_VEC_LIMBS_MAX] = (uint64_t (*)[K_MAX][M_VEC_LIMBS_MAX])SPS;
-  memset(accumulator, 0, sizeof(uint64_t) * K_MAX * K_MAX * M_VEC_LIMBS_MAX);
   uint64_t Phl[BINS][M_VEC_LIMBS_MAX] = {0};
 
 #define NIBBLES_PER_LIMB (64 / 4)
@@ -183,30 +182,30 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   const unsigned n = o + v;
 #define S_IDX(r,c) (((r) * n) + (c))
 
-  uint_fast16_t P1_used = 0;
+  uint_fast16_t P_lix = 0;
   for (uint_fast8_t P_row = 0; P_row < v; P_row++)
   {
     for (uint_fast8_t P_col = P_row; P_col < v; P_col++)
     {
-      pkod_get_vector(Phl[0], P1_used++, 1u, pkod);
+      pkod_get_vector(Phl[0], P_lix++, 1u, pkod);
       ADD_FOR_SPS
     }
   }
-  uint_fast16_t P2_used = 0;
+  P_lix = 0;
   for (uint_fast8_t P_row = 0; P_row < v; P_row++)
   {
     for (uint_fast8_t P_col = v; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl[0], P2_used++, 2u, pkod);
+      pkod_get_vector(Phl[0], P_lix++, 2u, pkod);
       ADD_FOR_SPS
     }
   }
-  uint_fast16_t P3_used = 0;
+  P_lix = 0;
   for (uint_fast8_t P_row = v; P_row < n; P_row++)
   {
     for (uint_fast8_t P_col = P_row; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl[0], P3_used++, 3u, pkod);
+      pkod_get_vector(Phl[0], P_lix++, 3u, pkod);
       ADD_FOR_SPS
     }
   }
