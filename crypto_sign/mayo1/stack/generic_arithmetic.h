@@ -125,32 +125,42 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
      While iterating over i = SPS_row, j = SPS_col, the elements of S are accessed column-wise.
      Therefore, it is more efficient to keep a pointer for each of the two columns and increment it
      by n rather than calculating the indexes everytime from SPS_row and SPS_col. */
+
+#define BINS (16u - 1u)
+static void mayo_generic_get_P_vector_multiples(uint64_t P[BINS][M_VEC_LIMBS_MAX],
+                                                const uint32_t vec_idx, const uint8_t P_idx,
+                                                mayo_pkod_t * const pkod,
+                                                const unsigned m_vec_limbs)
+{
+  pkod_get_vector(P[0], vec_idx, P_idx, pkod);
+  m_vec_mul_x(m_vec_limbs, P[0], P[1]);
+  m_vec_copy(m_vec_limbs, P[1], P[2]);
+  m_vec_add(m_vec_limbs, P[0], P[2]);
+  m_vec_mul_x(m_vec_limbs, P[1], P[3]);
+  m_vec_copy(m_vec_limbs, P[3], P[4]);
+  m_vec_add(m_vec_limbs, P[0], P[4]);
+  m_vec_copy(m_vec_limbs, P[3], P[5]);
+  m_vec_add(m_vec_limbs, P[1], P[5]);
+  m_vec_copy(m_vec_limbs, P[3], P[6]);
+  m_vec_add(m_vec_limbs, P[2], P[6]);
+  m_vec_mul_x(m_vec_limbs, P[3], P[7]);
+  m_vec_copy(m_vec_limbs, P[7], P[8]);
+  m_vec_add(m_vec_limbs, P[0], P[8]);
+  m_vec_copy(m_vec_limbs, P[7], P[9]);
+  m_vec_add(m_vec_limbs, P[1], P[9]);
+  m_vec_copy(m_vec_limbs, P[7], P[10]);
+  m_vec_add(m_vec_limbs, P[2], P[10]);
+  m_vec_copy(m_vec_limbs, P[7], P[11]);
+  m_vec_add(m_vec_limbs, P[3], P[11]);
+  m_vec_copy(m_vec_limbs, P[7], P[12]);
+  m_vec_add(m_vec_limbs, P[4], P[12]);
+  m_vec_copy(m_vec_limbs, P[7], P[13]);
+  m_vec_add(m_vec_limbs, P[5], P[13]);
+  m_vec_copy(m_vec_limbs, P[7], P[14]);
+  m_vec_add(m_vec_limbs, P[6], P[14]);
+}
+
 #define ADD_FOR_SPS                                                                                \
-  m_vec_mul_x(m_vec_limbs, Phl[0], Phl[1]);                                                        \
-  m_vec_copy(m_vec_limbs, Phl[1], Phl[2]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[0], Phl[2]);                                                          \
-  m_vec_mul_x(m_vec_limbs, Phl[1], Phl[3]);                                                        \
-  m_vec_copy(m_vec_limbs, Phl[3], Phl[4]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[0], Phl[4]);                                                          \
-  m_vec_copy(m_vec_limbs, Phl[3], Phl[5]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[1], Phl[5]);                                                          \
-  m_vec_copy(m_vec_limbs, Phl[3], Phl[6]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[2], Phl[6]);                                                          \
-  m_vec_mul_x(m_vec_limbs, Phl[3], Phl[7]);                                                        \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[8]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[0], Phl[8]);                                                          \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[9]);                                                         \
-  m_vec_add(m_vec_limbs, Phl[1], Phl[9]);                                                          \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[10]);                                                        \
-  m_vec_add(m_vec_limbs, Phl[2], Phl[10]);                                                         \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[11]);                                                        \
-  m_vec_add(m_vec_limbs, Phl[3], Phl[11]);                                                         \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[12]);                                                        \
-  m_vec_add(m_vec_limbs, Phl[4], Phl[12]);                                                         \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[13]);                                                        \
-  m_vec_add(m_vec_limbs, Phl[5], Phl[13]);                                                         \
-  m_vec_copy(m_vec_limbs, Phl[7], Phl[14]);                                                        \
-  m_vec_add(m_vec_limbs, Phl[6], Phl[14]);                                                         \
   const unsigned char * S_h = S + P_row;                                                           \
   for (uint_fast8_t SPS_row = 0; SPS_row < k; SPS_row++, S_h += n)                                 \
   {                                                                                                \
@@ -173,7 +183,6 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
                                                    const unsigned o, const unsigned k,
                                                    uint64_t * SPS)
 {
-#define BINS (16u - 1u)
   uint64_t (*accumulator)[K_MAX][M_VEC_LIMBS_MAX] = (uint64_t (*)[K_MAX][M_VEC_LIMBS_MAX])SPS;
   uint64_t Phl[BINS][M_VEC_LIMBS_MAX] = {0};
 
@@ -187,7 +196,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = P_row; P_col < v; P_col++)
     {
-      pkod_get_vector(Phl[0], P_lix++, 1u, pkod);
+      mayo_generic_get_P_vector_multiples(Phl, P_lix++, 1u, pkod, m_vec_limbs);
       ADD_FOR_SPS
     }
   }
@@ -196,7 +205,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = v; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl[0], P_lix++, 2u, pkod);
+      mayo_generic_get_P_vector_multiples(Phl, P_lix++, 2u, pkod, m_vec_limbs);
       ADD_FOR_SPS
     }
   }
@@ -205,7 +214,7 @@ static inline void mayo_generic_m_calculate_PS_SPS(mayo_pkod_t * const pkod,
   {
     for (uint_fast8_t P_col = P_row; P_col < n; P_col++)
     {
-      pkod_get_vector(Phl[0], P_lix++, 3u, pkod);
+      mayo_generic_get_P_vector_multiples(Phl, P_lix++, 3u, pkod, m_vec_limbs);
       ADD_FOR_SPS
     }
   }
