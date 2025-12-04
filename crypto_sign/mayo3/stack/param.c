@@ -1,1 +1,0 @@
-../../mayo1/stack/params.c
