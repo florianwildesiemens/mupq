@@ -3,7 +3,7 @@
 #ifndef MAYO_H
 #define MAYO_H
 
-#define MAYO_VARIANT MAYO_1
+#include "mayo_variant.h"
 #ifndef PQM4
 #define PQM4
 #endif
