@@ -3,10 +3,10 @@
 #ifndef MAYO_H
 #define MAYO_H
 
-#include "mayo_variant.h"
 #ifndef PQM4
 #define PQM4
 #endif
+#include "mayo_variant.h"
 
 #include <stdint.h>
 #include <stdlib.h>
@@ -134,7 +134,6 @@
 #define PARAM_NAME3(end, s) PARAM_JOIN3(MAYO_VARIANT, end, s)
 
 #ifdef ENABLE_PARAMS_DYNAMIC
-#define NAME_MAX mayo5
 #define N_MAX 154
 #define M_MAX 142
 #define O_MAX 17
