@@ -37,6 +37,11 @@ int
 crypto_sign_open(unsigned char *m, size_t *mlen,
                  const unsigned char *sm, size_t smlen,
                  const unsigned char *pk);
+
+int
+crypto_sign_verify(const unsigned char *sig, size_t siglen,
+                   const unsigned char *m, size_t mlen,
+                   const unsigned char *pk);
 #endif
 
 #endif /* api_h */
