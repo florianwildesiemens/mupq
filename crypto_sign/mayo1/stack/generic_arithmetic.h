@@ -4,7 +4,6 @@
 #define GENERIC_ARITHMETIC_H
 
 #include <simple_arithmetic.h>
-#include <string.h>
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 #include <arithmetic_dynamic.h>
@@ -95,27 +94,25 @@ void P1_times_Vt(const mayo_params_t* p, const uint64_t* P1, const unsigned char
 
 // compute P * S^t = [ P1  P2 ] * [S1] = [P1*S1 + P2*S2]
 //                   [  0  P3 ]   [S2]   [        P3*S2]
-static inline void mayo_generic_m_calculate_PS(mayo_pkod_t * const pkod, const unsigned char *S, const int m, const int v, const int o, const int k, uint64_t *PS) {
+static inline void mayo_generic_m_calculate_PS(const uint64_t *P1, const uint64_t *P2, const uint64_t *P3, const unsigned char *S,
+                                               const int m, const int v, const int o, const int k, uint64_t *PS) {
 
     const int n = o + v;
     const int m_vec_limbs = (m + 15)/16;
 
     uint64_t accumulator[16 * ((M_MAX+15)/16) * K_MAX * N_MAX] = {0};
-    uint64_t vector[(M_MAX+15)/16] = {0}; // Must be zero initialized, because pkod_get_vector() only sets m_vec_limbs per vector, but m_vec_add() from arithmetic_fixed.h adds M_VEC_LIMBS_MAX per vector
     int P1_used = 0;
     for (int row = 0; row < v; row++) {
         for (int j = row; j < v; j++) {
-            pkod_get_vector(vector, P1_used, 1u, pkod);
             for (int col = 0; col < k; col++) {
-                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )*m_vec_limbs);
+                m_vec_add(m_vec_limbs, P1 + (P1_used * m_vec_limbs), accumulator + ( (row * k + col) * 16 + S[col * n + j] )*m_vec_limbs);
             }
             P1_used ++;
         }
 
         for (int j = 0; j < o; j++) {
-            pkod_get_vector(vector, (row * o + j), 2u, pkod);
             for (int col = 0; col < k; col++) {
-                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[(col * n) + j + v] )* m_vec_limbs);
+                m_vec_add(m_vec_limbs, P2 + (row * o + j)*m_vec_limbs, accumulator + ( (row * k + col) * 16 + S[(col * n) + j + v] )* m_vec_limbs);
             }
         }
     }
@@ -123,9 +120,8 @@ static inline void mayo_generic_m_calculate_PS(mayo_pkod_t * const pkod, const u
     int P3_used = 0;
     for (int row = v; row < n; row++) {
         for (int j = row; j < n; j++) {
-            pkod_get_vector(vector, P3_used, 3u, pkod);
             for (int col = 0; col < k; col++) {
-                m_vec_add(m_vec_limbs, vector, accumulator + ( (row * k + col) * 16 + S[col * n + j] )* m_vec_limbs );
+                m_vec_add(m_vec_limbs, P3 + P3_used * m_vec_limbs, accumulator + ( (row * k + col) * 16 + S[col * n + j] )* m_vec_limbs );
             }
             P3_used ++;
         }
