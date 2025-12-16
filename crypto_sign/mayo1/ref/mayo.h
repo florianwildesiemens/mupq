@@ -209,6 +209,60 @@
 #define MAYO_2_pk_seed_bytes 16
 #define MAYO_2_sk_seed_bytes 24
 
+#define MAYO_103_name "MAYO_103"
+#define MAYO_103_n 86
+#define MAYO_103_m 64
+#define MAYO_103_o 22
+#define MAYO_103_k 3
+#define MAYO_103_cpk_bytes 8112
+#define MAYO_103_sig_bytes 153
+#define F_TAIL_64_3 { 8, 0, 2, 8 } /* z^64 + x^3*z^3 + x*z^2 + x^3 */
+#define MAYO_103_f_tail F_TAIL_64_3
+#define MAYO_103_f_tail_arr f_tail_64_3
+#define MAYO_103_m_vec_limbs ((MAYO_103_m + 15) / 16)
+#define MAYO_103_v (MAYO_103_n - MAYO_103_o)
+#define MAYO_103_A_cols (MAYO_103_k * MAYO_103_o + 1)
+#define MAYO_103_r_bytes (MAYO_103_A_cols / 2)
+#define MAYO_103_O_bytes (((MAYO_103_v * MAYO_103_o) + 1) / 2)
+#define MAYO_103_v_bytes ((MAYO_103_v + 1) / 2)
+#define MAYO_103_m_bytes ((MAYO_103_m + 1) / 2)
+#define MAYO_103_P1_bytes (((MAYO_103_v * (MAYO_103_v + 1)) / 2) * MAYO_103_m_bytes)
+#define MAYO_103_P2_bytes (( MAYO_103_v *  MAYO_103_o)           * MAYO_103_m_bytes)
+#define MAYO_103_P3_bytes (((MAYO_103_o * (MAYO_103_o + 1)) / 2) * MAYO_103_m_bytes)
+#define MAYO_103_csk_bytes MAYO_1_csk_bytes
+#define MAYO_103_salt_bytes MAYO_1_salt_bytes
+#define MAYO_103_digest_bytes MAYO_1_digest_bytes
+#define MAYO_103_pk_seed_bytes MAYO_1_pk_seed_bytes
+#define MAYO_103_sk_seed_bytes MAYO_1_sk_seed_bytes
+#define MAYO_103_q MAYO_q
+
+#define MAYO_102_name "MAYO_102"
+#define MAYO_102_n 100
+#define MAYO_102_m 64
+#define MAYO_102_o 33
+#define MAYO_102_k 2
+#define MAYO_102_cpk_bytes 17968
+#define MAYO_102_sig_bytes 124
+#define F_TAIL_64_2 { 8, 0, 2, 8 } /* z^64 + x^3*z^3 + x*z^2 + x^3 */
+#define MAYO_102_f_tail F_TAIL_64_2
+#define MAYO_102_f_tail_arr f_tail_64_2
+#define MAYO_102_m_vec_limbs ((MAYO_102_m + 15) / 16)
+#define MAYO_102_v (MAYO_102_n - MAYO_102_o)
+#define MAYO_102_A_cols (MAYO_102_k * MAYO_102_o + 1)
+#define MAYO_102_r_bytes (MAYO_102_A_cols / 2)
+#define MAYO_102_O_bytes (((MAYO_102_v * MAYO_102_o) + 1) / 2)
+#define MAYO_102_v_bytes ((MAYO_102_v + 1) / 2)
+#define MAYO_102_m_bytes ((MAYO_102_m + 1) / 2)
+#define MAYO_102_P1_bytes (((MAYO_102_v * (MAYO_102_v + 1)) / 2) * MAYO_102_m_bytes)
+#define MAYO_102_P2_bytes (( MAYO_102_v *  MAYO_102_o)           * MAYO_102_m_bytes)
+#define MAYO_102_P3_bytes (((MAYO_102_o * (MAYO_102_o + 1)) / 2) * MAYO_102_m_bytes)
+#define MAYO_102_csk_bytes MAYO_1_csk_bytes
+#define MAYO_102_salt_bytes MAYO_1_salt_bytes
+#define MAYO_102_digest_bytes MAYO_1_digest_bytes
+#define MAYO_102_pk_seed_bytes MAYO_1_pk_seed_bytes
+#define MAYO_102_sk_seed_bytes MAYO_1_sk_seed_bytes
+#define MAYO_102_q MAYO_q
+
 #define MAYO_3_name "MAYO_3"
 #define MAYO_3_n 118
 #define MAYO_3_m 108
@@ -272,7 +326,7 @@
 #ifdef ENABLE_PARAMS_DYNAMIC
 #define N_MAX 154
 #define M_MAX 142
-#define O_MAX 17
+#define O_MAX 33
 #define K_MAX 12
 #define Q_MAX 16
 #define PK_SEED_BYTES_MAX 16
@@ -280,14 +334,14 @@
 #define SALT_BYTES_MAX 40
 #define DIGEST_BYTES_MAX 64
 #define V_MAX 142
-#define O_BYTES_MAX 852
+#define O_BYTES_MAX 1106
 #define V_BYTES_MAX 71
 #define R_BYTES_MAX 72
 #define P1_BYTES_MAX 720863
 #define P2_BYTES_MAX 120984
-#define P3_BYTES_MAX 5538
+#define P3_BYTES_MAX 17952
 #define SIG_BYTES_MAX 964
-#define CPK_BYTES_MAX 5554
+#define CPK_BYTES_MAX 17968
 #define CSK_BYTES_MAX 40
 #define M_BYTES_MAX 71
 #define M_VEC_LIMBS_MAX 9
@@ -430,6 +484,8 @@ extern const mayo_params_t MAYO_107;
 extern const mayo_params_t MAYO_106;
 extern const mayo_params_t MAYO_105;
 extern const mayo_params_t MAYO_2;
+extern const mayo_params_t MAYO_103;
+extern const mayo_params_t MAYO_102;
 extern const mayo_params_t MAYO_3;
 extern const mayo_params_t MAYO_5;
 #endif
