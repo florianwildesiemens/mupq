@@ -4,6 +4,11 @@
 
 #ifdef ENABLE_PARAMS_DYNAMIC
 static const unsigned char f_tail_64[] = F_TAIL_64;
+static const unsigned char f_tail_66_5[] = F_TAIL_66_5;
+static const unsigned char f_tail_68_6[] = F_TAIL_68_6;
+static const unsigned char f_tail_70_7[] = F_TAIL_70_7;
+static const unsigned char f_tail_74_8[] = F_TAIL_74_8;
+static const unsigned char f_tail_76_9[] = F_TAIL_76_9;
 static const unsigned char f_tail_78[] = F_TAIL_78;
 static const unsigned char f_tail_108[] = F_TAIL_108;
 static const unsigned char f_tail_142[] = F_TAIL_142;
@@ -35,6 +40,11 @@ static const unsigned char f_tail_142[] = F_TAIL_142;
   };
 
 MAYO_GEN_PARAMS(MAYO_1);
+MAYO_GEN_PARAMS(MAYO_109);
+MAYO_GEN_PARAMS(MAYO_108);
+MAYO_GEN_PARAMS(MAYO_107);
+MAYO_GEN_PARAMS(MAYO_106);
+MAYO_GEN_PARAMS(MAYO_105);
 MAYO_GEN_PARAMS(MAYO_2);
 MAYO_GEN_PARAMS(MAYO_3);
 MAYO_GEN_PARAMS(MAYO_5);
