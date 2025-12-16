@@ -396,7 +396,6 @@ typedef struct {
     int O_bytes;
     int v_bytes;
     int r_bytes;
-    int R_bytes;
     int P1_bytes;
     int P2_bytes;
     int P3_bytes;
