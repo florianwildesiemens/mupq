@@ -289,6 +289,276 @@
 #define MAYO_3_pk_seed_bytes 16
 #define MAYO_3_sk_seed_bytes 32
 
+#define MAYO_313_name "MAYO_313"
+#define MAYO_313_n 123
+#define MAYO_313_m 114
+#define MAYO_313_o 9
+#define MAYO_313_k 13
+#define MAYO_313_cpk_bytes 2581
+#define MAYO_313_sig_bytes 831
+#define F_TAIL_114_13 { 1, 2, 1, 0 } /* z^114 + z^2 + x*z + 1 */
+#define MAYO_313_f_tail F_TAIL_114_13
+#define MAYO_313_f_tail_arr f_tail_114_13
+#define MAYO_313_m_vec_limbs ((MAYO_313_m + 15) / 16)
+#define MAYO_313_v (MAYO_313_n - MAYO_313_o)
+#define MAYO_313_A_cols (MAYO_313_k * MAYO_313_o + 1)
+#define MAYO_313_r_bytes (MAYO_313_A_cols / 2)
+#define MAYO_313_O_bytes (((MAYO_313_v * MAYO_313_o) + 1) / 2)
+#define MAYO_313_v_bytes ((MAYO_313_v + 1) / 2)
+#define MAYO_313_m_bytes ((MAYO_313_m + 1) / 2)
+#define MAYO_313_P1_bytes (((MAYO_313_v * (MAYO_313_v + 1)) / 2) * MAYO_313_m_bytes)
+#define MAYO_313_P2_bytes (( MAYO_313_v *  MAYO_313_o)           * MAYO_313_m_bytes)
+#define MAYO_313_P3_bytes (((MAYO_313_o * (MAYO_313_o + 1)) / 2) * MAYO_313_m_bytes)
+#define MAYO_313_csk_bytes MAYO_3_csk_bytes
+#define MAYO_313_salt_bytes MAYO_3_salt_bytes
+#define MAYO_313_digest_bytes MAYO_3_digest_bytes
+#define MAYO_313_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_313_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_313_q MAYO_q
+
+#define MAYO_310_name "MAYO_310"
+#define MAYO_310_n 117
+#define MAYO_310_m 106
+#define MAYO_310_o 11
+#define MAYO_310_k 10
+#define MAYO_310_cpk_bytes 3514
+#define MAYO_310_sig_bytes 617
+#define F_TAIL_106_10 { 2, 2, 1, 2 } /* z^106 + x*z^3 + z^2 + x*z + x */
+#define MAYO_310_f_tail F_TAIL_106_10
+#define MAYO_310_f_tail_arr f_tail_106_10
+#define MAYO_310_m_vec_limbs ((MAYO_310_m + 15) / 16)
+#define MAYO_310_v (MAYO_310_n - MAYO_310_o)
+#define MAYO_310_A_cols (MAYO_310_k * MAYO_310_o + 1)
+#define MAYO_310_r_bytes (MAYO_310_A_cols / 2)
+#define MAYO_310_O_bytes (((MAYO_310_v * MAYO_310_o) + 1) / 2)
+#define MAYO_310_v_bytes ((MAYO_310_v + 1) / 2)
+#define MAYO_310_m_bytes ((MAYO_310_m + 1) / 2)
+#define MAYO_310_P1_bytes (((MAYO_310_v * (MAYO_310_v + 1)) / 2) * MAYO_310_m_bytes)
+#define MAYO_310_P2_bytes (( MAYO_310_v *  MAYO_310_o)           * MAYO_310_m_bytes)
+#define MAYO_310_P3_bytes (((MAYO_310_o * (MAYO_310_o + 1)) / 2) * MAYO_310_m_bytes)
+#define MAYO_310_csk_bytes MAYO_3_csk_bytes
+#define MAYO_310_salt_bytes MAYO_3_salt_bytes
+#define MAYO_310_digest_bytes MAYO_3_digest_bytes
+#define MAYO_310_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_310_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_310_q MAYO_q
+
+#define MAYO_309_name "MAYO_309"
+#define MAYO_309_n 116
+#define MAYO_309_m 104
+#define MAYO_309_o 12
+#define MAYO_309_k 9
+#define MAYO_309_cpk_bytes 4072
+#define MAYO_309_sig_bytes 554
+#define F_TAIL_104_9 { 4, 8, 1, 4 } /* z^104 + x^2*z^3 + z^2 + x^3*z + x^2 */
+#define MAYO_309_f_tail F_TAIL_104_9
+#define MAYO_309_f_tail_arr f_tail_104_9
+#define MAYO_309_m_vec_limbs ((MAYO_309_m + 15) / 16)
+#define MAYO_309_v (MAYO_309_n - MAYO_309_o)
+#define MAYO_309_A_cols (MAYO_309_k * MAYO_309_o + 1)
+#define MAYO_309_r_bytes (MAYO_309_A_cols / 2)
+#define MAYO_309_O_bytes (((MAYO_309_v * MAYO_309_o) + 1) / 2)
+#define MAYO_309_v_bytes ((MAYO_309_v + 1) / 2)
+#define MAYO_309_m_bytes ((MAYO_309_m + 1) / 2)
+#define MAYO_309_P1_bytes (((MAYO_309_v * (MAYO_309_v + 1)) / 2) * MAYO_309_m_bytes)
+#define MAYO_309_P2_bytes (( MAYO_309_v *  MAYO_309_o)           * MAYO_309_m_bytes)
+#define MAYO_309_P3_bytes (((MAYO_309_o * (MAYO_309_o + 1)) / 2) * MAYO_309_m_bytes)
+#define MAYO_309_csk_bytes MAYO_3_csk_bytes
+#define MAYO_309_salt_bytes MAYO_3_salt_bytes
+#define MAYO_309_digest_bytes MAYO_3_digest_bytes
+#define MAYO_309_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_309_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_309_q MAYO_q
+
+#define MAYO_308_name "MAYO_308"
+#define MAYO_308_n 115
+#define MAYO_308_m 102
+#define MAYO_308_o 13
+#define MAYO_308_k 8
+#define MAYO_308_cpk_bytes 4657
+#define MAYO_308_sig_bytes 492
+#define F_TAIL_102_8 { 1, 0, 1, 2 } /* z^102 + x*z^3 + z^2 + 1 */
+#define MAYO_308_f_tail F_TAIL_102_8
+#define MAYO_308_f_tail_arr f_tail_102_8
+#define MAYO_308_m_vec_limbs ((MAYO_308_m + 15) / 16)
+#define MAYO_308_v (MAYO_308_n - MAYO_308_o)
+#define MAYO_308_A_cols (MAYO_308_k * MAYO_308_o + 1)
+#define MAYO_308_r_bytes (MAYO_308_A_cols / 2)
+#define MAYO_308_O_bytes (((MAYO_308_v * MAYO_308_o) + 1) / 2)
+#define MAYO_308_v_bytes ((MAYO_308_v + 1) / 2)
+#define MAYO_308_m_bytes ((MAYO_308_m + 1) / 2)
+#define MAYO_308_P1_bytes (((MAYO_308_v * (MAYO_308_v + 1)) / 2) * MAYO_308_m_bytes)
+#define MAYO_308_P2_bytes (( MAYO_308_v *  MAYO_308_o)           * MAYO_308_m_bytes)
+#define MAYO_308_P3_bytes (((MAYO_308_o * (MAYO_308_o + 1)) / 2) * MAYO_308_m_bytes)
+#define MAYO_308_csk_bytes MAYO_3_csk_bytes
+#define MAYO_308_salt_bytes MAYO_3_salt_bytes
+#define MAYO_308_digest_bytes MAYO_3_digest_bytes
+#define MAYO_308_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_308_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_308_q MAYO_q
+
+#define MAYO_307_name "MAYO_307"
+#define MAYO_307_n 115
+#define MAYO_307_m 100
+#define MAYO_307_o 15
+#define MAYO_307_k 7
+#define MAYO_307_cpk_bytes 6016
+#define MAYO_307_sig_bytes 434
+#define F_TAIL_100_7 { 4, 2, 4, 4 } /* z^100 + x^2*z^3 + x^2*z^2 + x*z + x^2 */
+#define MAYO_307_f_tail F_TAIL_100_7
+#define MAYO_307_f_tail_arr f_tail_100_7
+#define MAYO_307_m_vec_limbs ((MAYO_307_m + 15) / 16)
+#define MAYO_307_v (MAYO_307_n - MAYO_307_o)
+#define MAYO_307_A_cols (MAYO_307_k * MAYO_307_o + 1)
+#define MAYO_307_r_bytes (MAYO_307_A_cols / 2)
+#define MAYO_307_O_bytes (((MAYO_307_v * MAYO_307_o) + 1) / 2)
+#define MAYO_307_v_bytes ((MAYO_307_v + 1) / 2)
+#define MAYO_307_m_bytes ((MAYO_307_m + 1) / 2)
+#define MAYO_307_P1_bytes (((MAYO_307_v * (MAYO_307_v + 1)) / 2) * MAYO_307_m_bytes)
+#define MAYO_307_P2_bytes (( MAYO_307_v *  MAYO_307_o)           * MAYO_307_m_bytes)
+#define MAYO_307_P3_bytes (((MAYO_307_o * (MAYO_307_o + 1)) / 2) * MAYO_307_m_bytes)
+#define MAYO_307_csk_bytes MAYO_3_csk_bytes
+#define MAYO_307_salt_bytes MAYO_3_salt_bytes
+#define MAYO_307_digest_bytes MAYO_3_digest_bytes
+#define MAYO_307_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_307_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_307_q MAYO_q
+
+#define MAYO_306_name "MAYO_306"
+#define MAYO_306_n 115
+#define MAYO_306_m 98
+#define MAYO_306_o 17
+#define MAYO_306_k 6
+#define MAYO_306_cpk_bytes 7513
+#define MAYO_306_sig_bytes 377
+#define F_TAIL_98_6 { 1, 1, 0, 8 } /* z^98 + x^3*z^3 + z + 1 */
+#define MAYO_306_f_tail F_TAIL_98_6
+#define MAYO_306_f_tail_arr f_tail_98_6
+#define MAYO_306_m_vec_limbs ((MAYO_306_m + 15) / 16)
+#define MAYO_306_v (MAYO_306_n - MAYO_306_o)
+#define MAYO_306_A_cols (MAYO_306_k * MAYO_306_o + 1)
+#define MAYO_306_r_bytes (MAYO_306_A_cols / 2)
+#define MAYO_306_O_bytes (((MAYO_306_v * MAYO_306_o) + 1) / 2)
+#define MAYO_306_v_bytes ((MAYO_306_v + 1) / 2)
+#define MAYO_306_m_bytes ((MAYO_306_m + 1) / 2)
+#define MAYO_306_P1_bytes (((MAYO_306_v * (MAYO_306_v + 1)) / 2) * MAYO_306_m_bytes)
+#define MAYO_306_P2_bytes (( MAYO_306_v *  MAYO_306_o)           * MAYO_306_m_bytes)
+#define MAYO_306_P3_bytes (((MAYO_306_o * (MAYO_306_o + 1)) / 2) * MAYO_306_m_bytes)
+#define MAYO_306_csk_bytes MAYO_3_csk_bytes
+#define MAYO_306_salt_bytes MAYO_3_salt_bytes
+#define MAYO_306_digest_bytes MAYO_3_digest_bytes
+#define MAYO_306_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_306_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_306_q MAYO_q
+
+#define MAYO_305_name "MAYO_305"
+#define MAYO_305_n 118
+#define MAYO_305_m 98
+#define MAYO_305_o 20
+#define MAYO_305_k 5
+#define MAYO_305_cpk_bytes 10306
+#define MAYO_305_sig_bytes 327
+#define F_TAIL_98_5 { 1, 1, 0, 8 } /* z^98 + x^3*z^3 + z + 1 */
+#define MAYO_305_f_tail F_TAIL_98_5
+#define MAYO_305_f_tail_arr f_tail_98_5
+#define MAYO_305_m_vec_limbs ((MAYO_305_m + 15) / 16)
+#define MAYO_305_v (MAYO_305_n - MAYO_305_o)
+#define MAYO_305_A_cols (MAYO_305_k * MAYO_305_o + 1)
+#define MAYO_305_r_bytes (MAYO_305_A_cols / 2)
+#define MAYO_305_O_bytes (((MAYO_305_v * MAYO_305_o) + 1) / 2)
+#define MAYO_305_v_bytes ((MAYO_305_v + 1) / 2)
+#define MAYO_305_m_bytes ((MAYO_305_m + 1) / 2)
+#define MAYO_305_P1_bytes (((MAYO_305_v * (MAYO_305_v + 1)) / 2) * MAYO_305_m_bytes)
+#define MAYO_305_P2_bytes (( MAYO_305_v *  MAYO_305_o)           * MAYO_305_m_bytes)
+#define MAYO_305_P3_bytes (((MAYO_305_o * (MAYO_305_o + 1)) / 2) * MAYO_305_m_bytes)
+#define MAYO_305_csk_bytes MAYO_3_csk_bytes
+#define MAYO_305_salt_bytes MAYO_3_salt_bytes
+#define MAYO_305_digest_bytes MAYO_3_digest_bytes
+#define MAYO_305_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_305_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_305_q MAYO_q
+
+#define MAYO_304_name "MAYO_304"
+#define MAYO_304_n 121
+#define MAYO_304_m 96
+#define MAYO_304_o 25
+#define MAYO_304_k 4
+#define MAYO_304_cpk_bytes 15616
+#define MAYO_304_sig_bytes 274
+#define F_TAIL_96_4 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
+#define MAYO_304_f_tail F_TAIL_96_4
+#define MAYO_304_f_tail_arr f_tail_96_4
+#define MAYO_304_m_vec_limbs ((MAYO_304_m + 15) / 16)
+#define MAYO_304_v (MAYO_304_n - MAYO_304_o)
+#define MAYO_304_A_cols (MAYO_304_k * MAYO_304_o + 1)
+#define MAYO_304_r_bytes (MAYO_304_A_cols / 2)
+#define MAYO_304_O_bytes (((MAYO_304_v * MAYO_304_o) + 1) / 2)
+#define MAYO_304_v_bytes ((MAYO_304_v + 1) / 2)
+#define MAYO_304_m_bytes ((MAYO_304_m + 1) / 2)
+#define MAYO_304_P1_bytes (((MAYO_304_v * (MAYO_304_v + 1)) / 2) * MAYO_304_m_bytes)
+#define MAYO_304_P2_bytes (( MAYO_304_v *  MAYO_304_o)           * MAYO_304_m_bytes)
+#define MAYO_304_P3_bytes (((MAYO_304_o * (MAYO_304_o + 1)) / 2) * MAYO_304_m_bytes)
+#define MAYO_304_csk_bytes MAYO_3_csk_bytes
+#define MAYO_304_salt_bytes MAYO_3_salt_bytes
+#define MAYO_304_digest_bytes MAYO_3_digest_bytes
+#define MAYO_304_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_304_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_304_q MAYO_q
+
+#define MAYO_303_name "MAYO_303"
+#define MAYO_303_n 129
+#define MAYO_303_m 96
+#define MAYO_303_o 33
+#define MAYO_303_k 3
+#define MAYO_303_cpk_bytes 26944
+#define MAYO_303_sig_bytes 225
+#define F_TAIL_96_3 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
+#define MAYO_303_f_tail F_TAIL_96_3
+#define MAYO_303_f_tail_arr f_tail_96_3
+#define MAYO_303_m_vec_limbs ((MAYO_303_m + 15) / 16)
+#define MAYO_303_v (MAYO_303_n - MAYO_303_o)
+#define MAYO_303_A_cols (MAYO_303_k * MAYO_303_o + 1)
+#define MAYO_303_r_bytes (MAYO_303_A_cols / 2)
+#define MAYO_303_O_bytes (((MAYO_303_v * MAYO_303_o) + 1) / 2)
+#define MAYO_303_v_bytes ((MAYO_303_v + 1) / 2)
+#define MAYO_303_m_bytes ((MAYO_303_m + 1) / 2)
+#define MAYO_303_P1_bytes (((MAYO_303_v * (MAYO_303_v + 1)) / 2) * MAYO_303_m_bytes)
+#define MAYO_303_P2_bytes (( MAYO_303_v *  MAYO_303_o)           * MAYO_303_m_bytes)
+#define MAYO_303_P3_bytes (((MAYO_303_o * (MAYO_303_o + 1)) / 2) * MAYO_303_m_bytes)
+#define MAYO_303_csk_bytes MAYO_3_csk_bytes
+#define MAYO_303_salt_bytes MAYO_3_salt_bytes
+#define MAYO_303_digest_bytes MAYO_3_digest_bytes
+#define MAYO_303_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_303_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_303_q MAYO_q
+
+#define MAYO_302_name "MAYO_302"
+#define MAYO_302_n 150
+#define MAYO_302_m 96
+#define MAYO_302_o 49
+#define MAYO_302_k 2
+#define MAYO_302_cpk_bytes 58816
+#define MAYO_302_sig_bytes 182
+#define F_TAIL_96_2 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
+#define MAYO_302_f_tail F_TAIL_96_2
+#define MAYO_302_f_tail_arr f_tail_96_2
+#define MAYO_302_m_vec_limbs ((MAYO_302_m + 15) / 16)
+#define MAYO_302_v (MAYO_302_n - MAYO_302_o)
+#define MAYO_302_A_cols (MAYO_302_k * MAYO_302_o + 1)
+#define MAYO_302_r_bytes (MAYO_302_A_cols / 2)
+#define MAYO_302_O_bytes (((MAYO_302_v * MAYO_302_o) + 1) / 2)
+#define MAYO_302_v_bytes ((MAYO_302_v + 1) / 2)
+#define MAYO_302_m_bytes ((MAYO_302_m + 1) / 2)
+#define MAYO_302_P1_bytes (((MAYO_302_v * (MAYO_302_v + 1)) / 2) * MAYO_302_m_bytes)
+#define MAYO_302_P2_bytes (( MAYO_302_v *  MAYO_302_o)           * MAYO_302_m_bytes)
+#define MAYO_302_P3_bytes (((MAYO_302_o * (MAYO_302_o + 1)) / 2) * MAYO_302_m_bytes)
+#define MAYO_302_csk_bytes MAYO_3_csk_bytes
+#define MAYO_302_salt_bytes MAYO_3_salt_bytes
+#define MAYO_302_digest_bytes MAYO_3_digest_bytes
+#define MAYO_302_pk_seed_bytes MAYO_3_pk_seed_bytes
+#define MAYO_302_sk_seed_bytes MAYO_3_sk_seed_bytes
+#define MAYO_302_q MAYO_q
+
 #define MAYO_5_name "MAYO_5"
 #define MAYO_5_n 154
 #define MAYO_5_m 142
@@ -326,22 +596,22 @@
 #ifdef ENABLE_PARAMS_DYNAMIC
 #define N_MAX 154
 #define M_MAX 142
-#define O_MAX 33
-#define K_MAX 12
+#define O_MAX 49
+#define K_MAX 13
 #define Q_MAX 16
 #define PK_SEED_BYTES_MAX 16
 #define SK_SEED_BYTES_MAX 40
 #define SALT_BYTES_MAX 40
 #define DIGEST_BYTES_MAX 64
 #define V_MAX 142
-#define O_BYTES_MAX 1106
+#define O_BYTES_MAX 2475
 #define V_BYTES_MAX 71
 #define R_BYTES_MAX 72
 #define P1_BYTES_MAX 720863
-#define P2_BYTES_MAX 120984
-#define P3_BYTES_MAX 17952
+#define P2_BYTES_MAX 237552
+#define P3_BYTES_MAX 58800
 #define SIG_BYTES_MAX 964
-#define CPK_BYTES_MAX 17968
+#define CPK_BYTES_MAX 58816
 #define CSK_BYTES_MAX 40
 #define M_BYTES_MAX 71
 #define M_VEC_LIMBS_MAX 9
@@ -486,7 +756,17 @@ extern const mayo_params_t MAYO_105;
 extern const mayo_params_t MAYO_2;
 extern const mayo_params_t MAYO_103;
 extern const mayo_params_t MAYO_102;
+extern const mayo_params_t MAYO_313;
 extern const mayo_params_t MAYO_3;
+extern const mayo_params_t MAYO_310;
+extern const mayo_params_t MAYO_309;
+extern const mayo_params_t MAYO_308;
+extern const mayo_params_t MAYO_307;
+extern const mayo_params_t MAYO_306;
+extern const mayo_params_t MAYO_305;
+extern const mayo_params_t MAYO_304;
+extern const mayo_params_t MAYO_303;
+extern const mayo_params_t MAYO_302;
 extern const mayo_params_t MAYO_5;
 #endif
 

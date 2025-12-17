@@ -12,7 +12,17 @@ static const unsigned char f_tail_70_7[] = F_TAIL_70_7;
 static const unsigned char f_tail_74_8[] = F_TAIL_74_8;
 static const unsigned char f_tail_76_9[] = F_TAIL_76_9;
 static const unsigned char f_tail_78[] = F_TAIL_78;
+static const unsigned char f_tail_96_2[] = F_TAIL_96_2;
+static const unsigned char f_tail_96_3[] = F_TAIL_96_3;
+static const unsigned char f_tail_96_4[] = F_TAIL_96_4;
+static const unsigned char f_tail_98_5[] = F_TAIL_98_5;
+static const unsigned char f_tail_98_6[] = F_TAIL_98_6;
+static const unsigned char f_tail_100_7[] = F_TAIL_100_7;
+static const unsigned char f_tail_102_8[] = F_TAIL_102_8;
+static const unsigned char f_tail_104_9[] = F_TAIL_104_9;
+static const unsigned char f_tail_106_10[] = F_TAIL_106_10;
 static const unsigned char f_tail_108[] = F_TAIL_108;
+static const unsigned char f_tail_114_13[] = F_TAIL_114_13;
 static const unsigned char f_tail_142[] = F_TAIL_142;
 
 #define MAYO_GEN_PARAMS(nm) \
@@ -50,7 +60,17 @@ MAYO_GEN_PARAMS(MAYO_105);
 MAYO_GEN_PARAMS(MAYO_2);
 MAYO_GEN_PARAMS(MAYO_103);
 MAYO_GEN_PARAMS(MAYO_102);
+MAYO_GEN_PARAMS(MAYO_313);
 MAYO_GEN_PARAMS(MAYO_3);
+MAYO_GEN_PARAMS(MAYO_310);
+MAYO_GEN_PARAMS(MAYO_309);
+MAYO_GEN_PARAMS(MAYO_308);
+MAYO_GEN_PARAMS(MAYO_307);
+MAYO_GEN_PARAMS(MAYO_306);
+MAYO_GEN_PARAMS(MAYO_305);
+MAYO_GEN_PARAMS(MAYO_304);
+MAYO_GEN_PARAMS(MAYO_303);
+MAYO_GEN_PARAMS(MAYO_302);
 MAYO_GEN_PARAMS(MAYO_5);
 #endif
 
