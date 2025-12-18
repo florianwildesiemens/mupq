@@ -130,7 +130,7 @@
 #define MAYO_107_q MAYO_q
 
 #define MAYO_106_name "MAYO_106"
-#define MAYO_106_n 70
+#define MAYO_106_n 80
 #define MAYO_106_m 68
 #define MAYO_106_o 12
 #define MAYO_106_k 6
