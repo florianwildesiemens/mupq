@@ -96,7 +96,7 @@ CFLAGS += \
 
 LDFLAGS += \
 	-Lobj \
-	-Wl,--gc-sections --print-memory-usage
+	-Wl,--gc-sections
 
 LDLIBS += -lm
 
