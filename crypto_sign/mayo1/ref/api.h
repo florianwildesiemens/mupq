@@ -5,11 +5,11 @@
 
 #include <mayo.h>
 
-#define CRYPTO_SECRETKEYBYTES 24
-#define CRYPTO_PUBLICKEYBYTES 1420
-#define CRYPTO_BYTES 454
+#define CRYPTO_SECRETKEYBYTES PARAM_NAME(csk_bytes)
+#define CRYPTO_PUBLICKEYBYTES PARAM_NAME(cpk_bytes)
+#define CRYPTO_BYTES PARAM_NAME(sig_bytes)
 
-#define CRYPTO_ALGNAME "MAYO-1"
+#define CRYPTO_ALGNAME #MAYO_ALGNAME
 
 int
 crypto_sign_keypair(unsigned char *pk, unsigned char *sk);
@@ -37,6 +37,11 @@ int
 crypto_sign_open(unsigned char *m, size_t *mlen,
                  const unsigned char *sm, size_t smlen,
                  const unsigned char *pk);
+
+int
+crypto_sign_verify(const unsigned char *sig, size_t siglen,
+                   const unsigned char *m, size_t mlen,
+                   const unsigned char *pk);
 #endif
 
 #endif /* api_h */

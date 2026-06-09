@@ -91,6 +91,7 @@ CFLAGS += \
 	-Wall -Wextra -Wshadow \
 	-MMD \
 	-fno-common \
+  -ffunction-sections -fstack-usage \
 	$(CPPFLAGS)
 
 LDFLAGS += \

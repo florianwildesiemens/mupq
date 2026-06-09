@@ -4,7 +4,7 @@
 #include <mayo.h>
 
 #ifdef ENABLE_PARAMS_DYNAMIC
-#define MAYO_PARAMS &MAYO_1
+#define MAYO_PARAMS &MAYO_VARIANT
 #else
 #define MAYO_PARAMS 0
 #endif

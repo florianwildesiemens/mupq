@@ -1,0 +1,2 @@
+#define MAYO_VARIANT MAYO_1
+#define MAYO_ALGNAME MAYO-1
