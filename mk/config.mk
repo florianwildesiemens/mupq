@@ -91,12 +91,12 @@ CFLAGS += \
 	-Wall -Wextra -Wshadow \
 	-MMD \
 	-fno-common \
-  -ffunction-sections \
+  -ffunction-sections -fstack-usage \
 	$(CPPFLAGS)
 
 LDFLAGS += \
 	-Lobj \
-	-Wl,--gc-sections
+	-Wl,--gc-sections --print-memory-usage
 
 LDLIBS += -lm
 
