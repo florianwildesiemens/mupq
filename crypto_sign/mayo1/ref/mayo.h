@@ -212,6 +212,31 @@
 #define MAYO_2_pk_seed_bytes 16
 #define MAYO_2_sk_seed_bytes 24
 
+#define MAYO_2B_n 96
+#define MAYO_2B_m 64
+#define MAYO_2B_m_vec_limbs 4
+#define MAYO_2B_o 16
+#define MAYO_2B_v 80
+#define MAYO_2B_A_cols (MAYO_2B_k * MAYO_2B_o + 1)
+#define MAYO_2B_k 4
+#define MAYO_2B_q 16
+#define MAYO_2B_m_bytes 32
+#define MAYO_2B_O_bytes 640
+#define MAYO_2B_v_bytes 40
+#define MAYO_2B_r_bytes 32
+#define MAYO_2B_P1_bytes 103680
+#define MAYO_2B_P2_bytes 40960
+#define MAYO_2B_P3_bytes 4352
+#define MAYO_2B_csk_bytes 24
+#define MAYO_2B_cpk_bytes 4368
+#define MAYO_2B_sig_bytes 216
+#define MAYO_2B_f_tail F_TAIL_64
+#define MAYO_2B_f_tail_arr f_tail_64
+#define MAYO_2B_salt_bytes 24
+#define MAYO_2B_digest_bytes 32
+#define MAYO_2B_pk_seed_bytes 16
+#define MAYO_2B_sk_seed_bytes 24
+
 #define MAYO_103_n 86
 #define MAYO_103_m 64
 #define MAYO_103_m_vec_limbs 4
@@ -959,6 +984,7 @@ extern const mayo_params_t MAYO_107;
 extern const mayo_params_t MAYO_106;
 extern const mayo_params_t MAYO_105;
 extern const mayo_params_t MAYO_2;
+extern const mayo_params_t MAYO_2B;
 extern const mayo_params_t MAYO_103;
 extern const mayo_params_t MAYO_102;
 extern const mayo_params_t MAYO_313;
