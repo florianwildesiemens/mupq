@@ -12,36 +12,30 @@
 #include <stdlib.h>
 
 #define F_TAIL_LEN 4
-#define F_TAIL_78_10 { 8, 1, 1, 0 } /* f(z) =  z^78 + z^2 + z + x^3 */
-#define F_TAIL_76_9 { 2, 2, 4, 2 } /* z^76 + x*z^3 + x^2*z^2 + x*z + x */
-#define F_TAIL_74_8 { 8, 0, 2, 8 } /* z^74 + x^3*z^3 + x*z^2 + x^3 */
-#define F_TAIL_70_7 { 8, 1, 0, 1 } /* z^70 + z^3 + z + x^3 */
-#define F_TAIL_68_6 { 2, 0, 1, 1 } /* z^68 + z^3 + z^2 + x */
-#define F_TAIL_66_5 { 4, 0, 8, 4 } /* z^66 + x^2*z^3 + x^3*z^2 + x^2 */
-#define F_TAIL_64_4 { 8, 0, 2, 8 } /* f(z) =  z^64 + x^3*z^3 + x*z^2 + x^3 */
-#define F_TAIL_64_3 { 8, 0, 2, 8 } /* z^64 + x^3*z^3 + x*z^2 + x^3 */
-#define F_TAIL_64_2 { 8, 0, 2, 8 } /* z^64 + x^3*z^3 + x*z^2 + x^3 */
-#define F_TAIL_114_13 { 1, 2, 1, 0 } /* z^114 + z^2 + x*z + 1 */
-#define F_TAIL_108_11 { 8, 0, 1, 7 } /* f(z) =  z^108 + (x^2 + x + 1)*z^3 + z^2 + x^3 */
-#define F_TAIL_106_10 { 2, 2, 1, 2 } /* z^106 + x*z^3 + z^2 + x*z + x */
-#define F_TAIL_104_9 { 4, 8, 1, 4 } /* z^104 + x^2*z^3 + z^2 + x^3*z + x^2 */
-#define F_TAIL_102_8 { 1, 0, 1, 2 } /* z^102 + x*z^3 + z^2 + 1 */
-#define F_TAIL_100_7 { 4, 2, 4, 4 } /* z^100 + x^2*z^3 + x^2*z^2 + x*z + x^2 */
-#define F_TAIL_98_6 { 1, 1, 0, 8 } /* z^98 + x^3*z^3 + z + 1 */
-#define F_TAIL_98_5 { 1, 1, 0, 8 } /* z^98 + x^3*z^3 + z + 1 */
-#define F_TAIL_96_4 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
-#define F_TAIL_96_3 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
-#define F_TAIL_96_2 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
-#define F_TAIL_146_15 { 4, 10, 2, 1 } /* z^146 + z^3 + x*z^2 + (x^3 + x)*z + x^2 */
-#define F_TAIL_144_14 { 4, 0, 8, 4 } /* z^144 + x^2*z^3 + x^3*z^2 + x^2 */
-#define F_TAIL_142_12 { 4, 0, 8, 1 } /* f(z) =  z^142 + z^3 + x^3*z^2 + x^2 */
-#define F_TAIL_140_11 { 8, 8, 1, 2 } /* z^140 + x*z^3 + z^2 + x^3*z + x^3 */
-#define F_TAIL_138_10 { 8, 2, 0, 2 } /* z^138 + x*z^3 + x*z + x^3 */
-#define F_TAIL_136_9 { 8, 8, 1, 8 } /* z^136 + x^3*z^3 + z^2 + x^3*z + x^3 */
-#define F_TAIL_134_8 { 8, 8, 8, 1 } /* z^134 + z^3 + x^3*z^2 + x^3*z + x^3 */
-#define F_TAIL_132_7 { 1, 0, 1, 2 } /* z^132 + x*z^3 + z^2 + 1 */
-#define F_TAIL_132_6 { 1, 0, 1, 2 } /* z^132 + x*z^3 + z^2 + 1 */
-#define F_TAIL_130_5 { 4, 1, 4, 2 } /* z^130 + x*z^3 + x^2*z^2 + z + x^2 */
+#define F_TAIL_78 { 8, 1, 1, 0 } /* f(z) =  z^78 + z^2 + z + x^3 */
+#define F_TAIL_76 { 2, 2, 4, 2 } /* z^76 + x*z^3 + x^2*z^2 + x*z + x */
+#define F_TAIL_74 { 8, 0, 2, 8 } /* z^74 + x^3*z^3 + x*z^2 + x^3 */
+#define F_TAIL_70 { 8, 1, 0, 1 } /* z^70 + z^3 + z + x^3 */
+#define F_TAIL_68 { 2, 0, 1, 1 } /* z^68 + z^3 + z^2 + x */
+#define F_TAIL_66 { 4, 0, 8, 4 } /* z^66 + x^2*z^3 + x^3*z^2 + x^2 */
+#define F_TAIL_64 { 8, 0, 2, 8 } /* f(z) =  z^64 + x^3*z^3 + x*z^2 + x^3 */
+#define F_TAIL_114 { 1, 2, 1, 0 } /* z^114 + z^2 + x*z + 1 */
+#define F_TAIL_108 { 8, 0, 1, 7 } /* f(z) =  z^108 + (x^2 + x + 1)*z^3 + z^2 + x^3 */
+#define F_TAIL_106 { 2, 2, 1, 2 } /* z^106 + x*z^3 + z^2 + x*z + x */
+#define F_TAIL_104 { 4, 8, 1, 4 } /* z^104 + x^2*z^3 + z^2 + x^3*z + x^2 */
+#define F_TAIL_102 { 1, 0, 1, 2 } /* z^102 + x*z^3 + z^2 + 1 */
+#define F_TAIL_100 { 4, 2, 4, 4 } /* z^100 + x^2*z^3 + x^2*z^2 + x*z + x^2 */
+#define F_TAIL_98 { 1, 1, 0, 8 } /* z^98 + x^3*z^3 + z + 1 */
+#define F_TAIL_96 { 4, 4, 0, 4 } /* z^96 + x^2*z^3 + x^2*z + x^2 */
+#define F_TAIL_146 { 4, 10, 2, 1 } /* z^146 + z^3 + x*z^2 + (x^3 + x)*z + x^2 */
+#define F_TAIL_144 { 4, 0, 8, 4 } /* z^144 + x^2*z^3 + x^3*z^2 + x^2 */
+#define F_TAIL_142 { 4, 0, 8, 1 } /* f(z) =  z^142 + z^3 + x^3*z^2 + x^2 */
+#define F_TAIL_140 { 8, 8, 1, 2 } /* z^140 + x*z^3 + z^2 + x^3*z + x^3 */
+#define F_TAIL_138 { 8, 2, 0, 2 } /* z^138 + x*z^3 + x*z + x^3 */
+#define F_TAIL_136 { 8, 8, 1, 8 } /* z^136 + x^3*z^3 + z^2 + x^3*z + x^3 */
+#define F_TAIL_134 { 8, 8, 8, 1 } /* z^134 + z^3 + x^3*z^2 + x^3*z + x^3 */
+#define F_TAIL_132 { 1, 0, 1, 2 } /* z^132 + x*z^3 + z^2 + 1 */
+#define F_TAIL_130 { 4, 1, 4, 2 } /* z^130 + x*z^3 + x^2*z^2 + z + x^2 */
 
 #define MAYO_1_n 86
 #define MAYO_1_m 78
@@ -61,8 +55,8 @@
 #define MAYO_1_csk_bytes 24
 #define MAYO_1_cpk_bytes 1420
 #define MAYO_1_sig_bytes 454
-#define MAYO_1_f_tail F_TAIL_78_10
-#define MAYO_1_f_tail_arr f_tail_78_10
+#define MAYO_1_f_tail F_TAIL_78
+#define MAYO_1_f_tail_arr f_tail_78
 #define MAYO_1_salt_bytes 24
 #define MAYO_1_digest_bytes 32
 #define MAYO_1_pk_seed_bytes 16
@@ -86,8 +80,8 @@
 #define MAYO_109_csk_bytes 24
 #define MAYO_109_cpk_bytes 1726
 #define MAYO_109_sig_bytes 407
-#define MAYO_109_f_tail F_TAIL_76_9
-#define MAYO_109_f_tail_arr f_tail_76_9
+#define MAYO_109_f_tail F_TAIL_76
+#define MAYO_109_f_tail_arr f_tail_76
 #define MAYO_109_salt_bytes 24
 #define MAYO_109_digest_bytes 32
 #define MAYO_109_pk_seed_bytes 16
@@ -111,8 +105,8 @@
 #define MAYO_108_csk_bytes 24
 #define MAYO_108_cpk_bytes 2051
 #define MAYO_108_sig_bytes 360
-#define MAYO_108_f_tail F_TAIL_74_8
-#define MAYO_108_f_tail_arr f_tail_74_8
+#define MAYO_108_f_tail F_TAIL_74
+#define MAYO_108_f_tail_arr f_tail_74
 #define MAYO_108_salt_bytes 24
 #define MAYO_108_digest_bytes 32
 #define MAYO_108_pk_seed_bytes 16
@@ -136,8 +130,8 @@
 #define MAYO_107_csk_bytes 24
 #define MAYO_107_cpk_bytes 2326
 #define MAYO_107_sig_bytes 308
-#define MAYO_107_f_tail F_TAIL_70_7
-#define MAYO_107_f_tail_arr f_tail_70_7
+#define MAYO_107_f_tail F_TAIL_70
+#define MAYO_107_f_tail_arr f_tail_70
 #define MAYO_107_salt_bytes 24
 #define MAYO_107_digest_bytes 32
 #define MAYO_107_pk_seed_bytes 16
@@ -161,8 +155,8 @@
 #define MAYO_106_csk_bytes 24
 #define MAYO_106_cpk_bytes 2668
 #define MAYO_106_sig_bytes 264
-#define MAYO_106_f_tail F_TAIL_68_6
-#define MAYO_106_f_tail_arr f_tail_68_6
+#define MAYO_106_f_tail F_TAIL_68
+#define MAYO_106_f_tail_arr f_tail_68
 #define MAYO_106_salt_bytes 24
 #define MAYO_106_digest_bytes 32
 #define MAYO_106_pk_seed_bytes 16
@@ -186,8 +180,8 @@
 #define MAYO_105_csk_bytes 24
 #define MAYO_105_cpk_bytes 3481
 #define MAYO_105_sig_bytes 224
-#define MAYO_105_f_tail F_TAIL_66_5
-#define MAYO_105_f_tail_arr f_tail_66_5
+#define MAYO_105_f_tail F_TAIL_66
+#define MAYO_105_f_tail_arr f_tail_66
 #define MAYO_105_salt_bytes 24
 #define MAYO_105_digest_bytes 32
 #define MAYO_105_pk_seed_bytes 16
@@ -211,12 +205,37 @@
 #define MAYO_2_csk_bytes 24
 #define MAYO_2_cpk_bytes 4912
 #define MAYO_2_sig_bytes 186
-#define MAYO_2_f_tail F_TAIL_64_4
-#define MAYO_2_f_tail_arr f_tail_64_4
+#define MAYO_2_f_tail F_TAIL_64
+#define MAYO_2_f_tail_arr f_tail_64
 #define MAYO_2_salt_bytes 24
 #define MAYO_2_digest_bytes 32
 #define MAYO_2_pk_seed_bytes 16
 #define MAYO_2_sk_seed_bytes 24
+
+#define MAYO_2B_n 96
+#define MAYO_2B_m 64
+#define MAYO_2B_m_vec_limbs 4
+#define MAYO_2B_o 16
+#define MAYO_2B_v 80
+#define MAYO_2B_A_cols (MAYO_2B_k * MAYO_2B_o + 1)
+#define MAYO_2B_k 4
+#define MAYO_2B_q 16
+#define MAYO_2B_m_bytes 32
+#define MAYO_2B_O_bytes 640
+#define MAYO_2B_v_bytes 40
+#define MAYO_2B_r_bytes 32
+#define MAYO_2B_P1_bytes 103680
+#define MAYO_2B_P2_bytes 40960
+#define MAYO_2B_P3_bytes 4352
+#define MAYO_2B_csk_bytes 24
+#define MAYO_2B_cpk_bytes 4368
+#define MAYO_2B_sig_bytes 216
+#define MAYO_2B_f_tail F_TAIL_64
+#define MAYO_2B_f_tail_arr f_tail_64
+#define MAYO_2B_salt_bytes 24
+#define MAYO_2B_digest_bytes 32
+#define MAYO_2B_pk_seed_bytes 16
+#define MAYO_2B_sk_seed_bytes 24
 
 #define MAYO_103_n 86
 #define MAYO_103_m 64
@@ -236,8 +255,8 @@
 #define MAYO_103_csk_bytes 24
 #define MAYO_103_cpk_bytes 8112
 #define MAYO_103_sig_bytes 153
-#define MAYO_103_f_tail F_TAIL_64_3
-#define MAYO_103_f_tail_arr f_tail_64_3
+#define MAYO_103_f_tail F_TAIL_64
+#define MAYO_103_f_tail_arr f_tail_64
 #define MAYO_103_salt_bytes 24
 #define MAYO_103_digest_bytes 32
 #define MAYO_103_pk_seed_bytes 16
@@ -261,8 +280,8 @@
 #define MAYO_102_csk_bytes 24
 #define MAYO_102_cpk_bytes 17968
 #define MAYO_102_sig_bytes 124
-#define MAYO_102_f_tail F_TAIL_64_2
-#define MAYO_102_f_tail_arr f_tail_64_2
+#define MAYO_102_f_tail F_TAIL_64
+#define MAYO_102_f_tail_arr f_tail_64
 #define MAYO_102_salt_bytes 24
 #define MAYO_102_digest_bytes 32
 #define MAYO_102_pk_seed_bytes 16
@@ -286,8 +305,8 @@
 #define MAYO_313_csk_bytes 32
 #define MAYO_313_cpk_bytes 2581
 #define MAYO_313_sig_bytes 832
-#define MAYO_313_f_tail F_TAIL_114_13
-#define MAYO_313_f_tail_arr f_tail_114_13
+#define MAYO_313_f_tail F_TAIL_114
+#define MAYO_313_f_tail_arr f_tail_114
 #define MAYO_313_salt_bytes 32
 #define MAYO_313_digest_bytes 48
 #define MAYO_313_pk_seed_bytes 16
@@ -311,8 +330,8 @@
 #define MAYO_3_csk_bytes 32
 #define MAYO_3_cpk_bytes 2986
 #define MAYO_3_sig_bytes 681
-#define MAYO_3_f_tail F_TAIL_108_11
-#define MAYO_3_f_tail_arr f_tail_108_11
+#define MAYO_3_f_tail F_TAIL_108
+#define MAYO_3_f_tail_arr f_tail_108
 #define MAYO_3_salt_bytes 32
 #define MAYO_3_digest_bytes 48
 #define MAYO_3_pk_seed_bytes 16
@@ -336,8 +355,8 @@
 #define MAYO_310_csk_bytes 32
 #define MAYO_310_cpk_bytes 3514
 #define MAYO_310_sig_bytes 617
-#define MAYO_310_f_tail F_TAIL_106_10
-#define MAYO_310_f_tail_arr f_tail_106_10
+#define MAYO_310_f_tail F_TAIL_106
+#define MAYO_310_f_tail_arr f_tail_106
 #define MAYO_310_salt_bytes 32
 #define MAYO_310_digest_bytes 48
 #define MAYO_310_pk_seed_bytes 16
@@ -361,8 +380,8 @@
 #define MAYO_309_csk_bytes 32
 #define MAYO_309_cpk_bytes 4072
 #define MAYO_309_sig_bytes 554
-#define MAYO_309_f_tail F_TAIL_104_9
-#define MAYO_309_f_tail_arr f_tail_104_9
+#define MAYO_309_f_tail F_TAIL_104
+#define MAYO_309_f_tail_arr f_tail_104
 #define MAYO_309_salt_bytes 32
 #define MAYO_309_digest_bytes 48
 #define MAYO_309_pk_seed_bytes 16
@@ -386,8 +405,8 @@
 #define MAYO_308_csk_bytes 32
 #define MAYO_308_cpk_bytes 4657
 #define MAYO_308_sig_bytes 492
-#define MAYO_308_f_tail F_TAIL_102_8
-#define MAYO_308_f_tail_arr f_tail_102_8
+#define MAYO_308_f_tail F_TAIL_102
+#define MAYO_308_f_tail_arr f_tail_102
 #define MAYO_308_salt_bytes 32
 #define MAYO_308_digest_bytes 48
 #define MAYO_308_pk_seed_bytes 16
@@ -411,8 +430,8 @@
 #define MAYO_307_csk_bytes 32
 #define MAYO_307_cpk_bytes 6016
 #define MAYO_307_sig_bytes 435
-#define MAYO_307_f_tail F_TAIL_100_7
-#define MAYO_307_f_tail_arr f_tail_100_7
+#define MAYO_307_f_tail F_TAIL_100
+#define MAYO_307_f_tail_arr f_tail_100
 #define MAYO_307_salt_bytes 32
 #define MAYO_307_digest_bytes 48
 #define MAYO_307_pk_seed_bytes 16
@@ -436,8 +455,8 @@
 #define MAYO_306_csk_bytes 32
 #define MAYO_306_cpk_bytes 7513
 #define MAYO_306_sig_bytes 377
-#define MAYO_306_f_tail F_TAIL_98_6
-#define MAYO_306_f_tail_arr f_tail_98_6
+#define MAYO_306_f_tail F_TAIL_98
+#define MAYO_306_f_tail_arr f_tail_98
 #define MAYO_306_salt_bytes 32
 #define MAYO_306_digest_bytes 48
 #define MAYO_306_pk_seed_bytes 16
@@ -461,8 +480,8 @@
 #define MAYO_305_csk_bytes 32
 #define MAYO_305_cpk_bytes 10306
 #define MAYO_305_sig_bytes 327
-#define MAYO_305_f_tail F_TAIL_98_5
-#define MAYO_305_f_tail_arr f_tail_98_5
+#define MAYO_305_f_tail F_TAIL_98
+#define MAYO_305_f_tail_arr f_tail_98
 #define MAYO_305_salt_bytes 32
 #define MAYO_305_digest_bytes 48
 #define MAYO_305_pk_seed_bytes 16
@@ -486,8 +505,8 @@
 #define MAYO_304_csk_bytes 32
 #define MAYO_304_cpk_bytes 15616
 #define MAYO_304_sig_bytes 274
-#define MAYO_304_f_tail F_TAIL_96_4
-#define MAYO_304_f_tail_arr f_tail_96_4
+#define MAYO_304_f_tail F_TAIL_96
+#define MAYO_304_f_tail_arr f_tail_96
 #define MAYO_304_salt_bytes 32
 #define MAYO_304_digest_bytes 48
 #define MAYO_304_pk_seed_bytes 16
@@ -511,8 +530,8 @@
 #define MAYO_303_csk_bytes 32
 #define MAYO_303_cpk_bytes 26944
 #define MAYO_303_sig_bytes 226
-#define MAYO_303_f_tail F_TAIL_96_3
-#define MAYO_303_f_tail_arr f_tail_96_3
+#define MAYO_303_f_tail F_TAIL_96
+#define MAYO_303_f_tail_arr f_tail_96
 #define MAYO_303_salt_bytes 32
 #define MAYO_303_digest_bytes 48
 #define MAYO_303_pk_seed_bytes 16
@@ -536,8 +555,8 @@
 #define MAYO_302_csk_bytes 32
 #define MAYO_302_cpk_bytes 58816
 #define MAYO_302_sig_bytes 182
-#define MAYO_302_f_tail F_TAIL_96_2
-#define MAYO_302_f_tail_arr f_tail_96_2
+#define MAYO_302_f_tail F_TAIL_96
+#define MAYO_302_f_tail_arr f_tail_96
 #define MAYO_302_salt_bytes 32
 #define MAYO_302_digest_bytes 48
 #define MAYO_302_pk_seed_bytes 16
@@ -561,8 +580,8 @@
 #define MAYO_515_csk_bytes 40
 #define MAYO_515_cpk_bytes 4031
 #define MAYO_515_sig_bytes 1210
-#define MAYO_515_f_tail F_TAIL_146_15
-#define MAYO_515_f_tail_arr f_tail_146_15
+#define MAYO_515_f_tail F_TAIL_146
+#define MAYO_515_f_tail_arr f_tail_146
 #define MAYO_515_salt_bytes 40
 #define MAYO_515_digest_bytes 64
 #define MAYO_515_pk_seed_bytes 16
@@ -586,8 +605,8 @@
 #define MAYO_514_csk_bytes 40
 #define MAYO_514_cpk_bytes 4768
 #define MAYO_514_sig_bytes 1125
-#define MAYO_514_f_tail F_TAIL_144_14
-#define MAYO_514_f_tail_arr f_tail_144_14
+#define MAYO_514_f_tail F_TAIL_144
+#define MAYO_514_f_tail_arr f_tail_144
 #define MAYO_514_salt_bytes 40
 #define MAYO_514_digest_bytes 64
 #define MAYO_514_pk_seed_bytes 16
@@ -611,8 +630,8 @@
 #define MAYO_5_csk_bytes 40
 #define MAYO_5_cpk_bytes 5554
 #define MAYO_5_sig_bytes 964
-#define MAYO_5_f_tail F_TAIL_142_12
-#define MAYO_5_f_tail_arr f_tail_142_12
+#define MAYO_5_f_tail F_TAIL_142
+#define MAYO_5_f_tail_arr f_tail_142
 #define MAYO_5_salt_bytes 40
 #define MAYO_5_digest_bytes 64
 #define MAYO_5_pk_seed_bytes 16
@@ -636,8 +655,8 @@
 #define MAYO_511_csk_bytes 40
 #define MAYO_511_cpk_bytes 6386
 #define MAYO_511_sig_bytes 882
-#define MAYO_511_f_tail F_TAIL_140_11
-#define MAYO_511_f_tail_arr f_tail_140_11
+#define MAYO_511_f_tail F_TAIL_140
+#define MAYO_511_f_tail_arr f_tail_140
 #define MAYO_511_salt_bytes 40
 #define MAYO_511_digest_bytes 64
 #define MAYO_511_pk_seed_bytes 16
@@ -661,8 +680,8 @@
 #define MAYO_510_csk_bytes 40
 #define MAYO_510_cpk_bytes 7261
 #define MAYO_510_sig_bytes 800
-#define MAYO_510_f_tail F_TAIL_138_10
-#define MAYO_510_f_tail_arr f_tail_138_10
+#define MAYO_510_f_tail F_TAIL_138
+#define MAYO_510_f_tail_arr f_tail_138
 #define MAYO_510_salt_bytes 40
 #define MAYO_510_digest_bytes 64
 #define MAYO_510_pk_seed_bytes 16
@@ -686,8 +705,8 @@
 #define MAYO_509_csk_bytes 40
 #define MAYO_509_cpk_bytes 9264
 #define MAYO_509_sig_bytes 724
-#define MAYO_509_f_tail F_TAIL_136_9
-#define MAYO_509_f_tail_arr f_tail_136_9
+#define MAYO_509_f_tail F_TAIL_136
+#define MAYO_509_f_tail_arr f_tail_136
 #define MAYO_509_salt_bytes 40
 #define MAYO_509_digest_bytes 64
 #define MAYO_509_pk_seed_bytes 16
@@ -711,8 +730,8 @@
 #define MAYO_508_csk_bytes 40
 #define MAYO_508_cpk_bytes 10267
 #define MAYO_508_sig_bytes 644
-#define MAYO_508_f_tail F_TAIL_134_8
-#define MAYO_508_f_tail_arr f_tail_134_8
+#define MAYO_508_f_tail F_TAIL_134
+#define MAYO_508_f_tail_arr f_tail_134
 #define MAYO_508_salt_bytes 40
 #define MAYO_508_digest_bytes 64
 #define MAYO_508_pk_seed_bytes 16
@@ -736,8 +755,8 @@
 #define MAYO_507_csk_bytes 40
 #define MAYO_507_cpk_bytes 13876
 #define MAYO_507_sig_bytes 572
-#define MAYO_507_f_tail F_TAIL_132_7
-#define MAYO_507_f_tail_arr f_tail_132_7
+#define MAYO_507_f_tail F_TAIL_132
+#define MAYO_507_f_tail_arr f_tail_132
 #define MAYO_507_salt_bytes 40
 #define MAYO_507_digest_bytes 64
 #define MAYO_507_pk_seed_bytes 16
@@ -761,8 +780,8 @@
 #define MAYO_506_csk_bytes 40
 #define MAYO_506_cpk_bytes 18232
 #define MAYO_506_sig_bytes 505
-#define MAYO_506_f_tail F_TAIL_132_6
-#define MAYO_506_f_tail_arr f_tail_132_6
+#define MAYO_506_f_tail F_TAIL_132
+#define MAYO_506_f_tail_arr f_tail_132
 #define MAYO_506_salt_bytes 40
 #define MAYO_506_digest_bytes 64
 #define MAYO_506_pk_seed_bytes 16
@@ -786,8 +805,8 @@
 #define MAYO_505_csk_bytes 40
 #define MAYO_505_cpk_bytes 24586
 #define MAYO_505_sig_bytes 433
-#define MAYO_505_f_tail F_TAIL_130_5
-#define MAYO_505_f_tail_arr f_tail_130_5
+#define MAYO_505_f_tail F_TAIL_130
+#define MAYO_505_f_tail_arr f_tail_130
 #define MAYO_505_salt_bytes 40
 #define MAYO_505_digest_bytes 64
 #define MAYO_505_pk_seed_bytes 16
@@ -965,6 +984,7 @@ extern const mayo_params_t MAYO_107;
 extern const mayo_params_t MAYO_106;
 extern const mayo_params_t MAYO_105;
 extern const mayo_params_t MAYO_2;
+extern const mayo_params_t MAYO_2B;
 extern const mayo_params_t MAYO_103;
 extern const mayo_params_t MAYO_102;
 extern const mayo_params_t MAYO_313;
