@@ -1,4 +1,7 @@
 // SPDX-License-Identifier: Apache-2.0
+// -----------------------------------------------------
+//   The gf16_mul_table is Copyright (c) Siemens 2025
+// -----------------------------------------------------
 
 #include <arithmetic.h>
 #include <simple_arithmetic.h>
@@ -128,8 +131,6 @@ volatile uint64_t uint64_t_blocker = 0;
 volatile unsigned char unsigned_char_blocker = 0;
 
 /** GF(2^4) Flattened Multiplication Table
- * Copyright 2026 Siemens AG
- * Licensed under the Apache License, Version 2.0
 
   Irreducible polynomial: x^4 + x + 1
   Index formula: (a << 4) + b, where a × b = table[index] */

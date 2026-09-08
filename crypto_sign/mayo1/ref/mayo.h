@@ -1,7 +1,9 @@
 // SPDX-License-Identifier: Apache-2.0
-/* Data for parameter sets 109, 108, 107, 106, 105, 2B, 103, 102, 313, 310, 309, 308, 307, 306, 305, 304, 303, 302, 515,
- * 514, 511, 510, 509, 508, 507, 506, and 505 are Copyright 2026 Siemens AG
- *
+// -----------------------------------------------------
+// Parameter sets 109, 108, 107, 106, 105, 2B, 103, 102, 313, 310, 309, 308, 307, 306, 305, 304, 303, 302, 515, 514,
+// 511, 510, 509, 508, 507, 506, and 505 are Copyright (c) Siemens 2025 - 2026
+// -----------------------------------------------------
+/*
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
